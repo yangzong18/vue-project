@@ -1,8 +1,7 @@
 <template>
   <div id="app">
     <cn-header></cn-header>
-    <router-view name="main"></router-view>
-    <router-view name="left-sidebar"></router-view>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -10,7 +9,7 @@
 import cnHeader from './components/Header.vue'
 export default {
   name: 'app',
-  components:{
+  comments:{
     cnHeader
   }
 }
@@ -18,4 +17,12 @@ export default {
 
 <style>
 @import './assets/css/public.css';
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
 </style>

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import PostList from '../components/PostList.vue'
+import PostList from ''
 
 Vue.use(Router)
 

@@ -1,8 +1,7 @@
 <template>
   <div id="app">
     <cn-header></cn-header>
-    <router-view name="main"></router-view>
-    <router-view name="left-sidebar"></router-view>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -17,5 +16,4 @@ export default {
 </script>
 
 <style>
-@import './assets/css/public.css';
 </style>

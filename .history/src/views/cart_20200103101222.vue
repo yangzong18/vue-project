@@ -164,16 +164,13 @@ export default {
         changeQuantity:function(product,type){
             if(type > 0){
                 product.productQuantity++;
-              
             }else{
                 if(product.productQuantity < 2){
                     product.productQuantity = 1;
                 }else{
                     product.productQuantity--;
-
                 }
             }
-            this.calcTotalmoney();
         },
         removeItem:function(product){
           this.deleteClass = true;
@@ -192,21 +189,13 @@ export default {
             this.selectedAll = true;
             this.productList.forEach(function(val,key){
               console.log(val)
-                if(val.ischecked){
-                    _this.totalMoney += val.productPrice*val.productQuantity;
+                if(val.isChecked){
+                    _this.totalMoney += val.productPrice*val.productQuantity
                 }else{
                   _this.selectedAll = false;
                 }
             })
             console.log(this.selectedAll)
-            var _this = this;//用ES5方法解决this指向问题
-            //每次计算前必须清理，防止出现累计计算
-            this.totalMoney = 0;
-            this.productList.forEach(function(val,index){
-              if(val.ischecked){
-                _this.totalMoney += val.productPrice * val.productQuantity;
-              }
-            });
         },
         selectedItem:function(product){
             if(typeof product.ischecked === 'undefined'){
@@ -219,20 +208,14 @@ export default {
             this.calcTotalmoney();
         },
         checkAll:function(){
-            //根据传参决定是全选还是取消全选
-            this.selectedAll = !this.selectedAll;
             var _this = this;//用ES5方法解决this指向问题
-            //forEach()，val为数据的每一项，index为每一项的索引
-            this.productList.forEach(function(val,index){
-              //同样的，因为json内没有确定是否选择的属性，我们需要自己创建一个表示每一项商品是否被选择的属性，
-              //通过局部注册来注册data里的每一项商品的ischecked属性。
-              if(typeof val.ischecked === 'undefined'){
-                _this.$set(val,'ischecked',_this.selectedAll);
-              }else {
-                val.ischecked = _this.selectedAll;
-              }
-            });
-			      this.calcTotalmoney();// 全选/非全选 商品重新计算总金额
+			//每次计算前必须清理，防止出现累计计算
+			this.totalMoney = 0;
+			this.productList.forEach(function(val,index){
+				if(val.ischecked){
+					_this.totalMoney += val.productPrice * val.productQuantity;
+				}
+			});
 		},
 
     }

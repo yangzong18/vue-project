@@ -164,16 +164,14 @@ export default {
         changeQuantity:function(product,type){
             if(type > 0){
                 product.productQuantity++;
-              
+                this.
             }else{
                 if(product.productQuantity < 2){
                     product.productQuantity = 1;
                 }else{
                     product.productQuantity--;
-
                 }
             }
-            this.calcTotalmoney();
         },
         removeItem:function(product){
           this.deleteClass = true;

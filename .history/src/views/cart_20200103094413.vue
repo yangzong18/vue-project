@@ -125,7 +125,7 @@
             text-align: center;
         }
 .quantity a{
-  font-size: 26px;
+font-size: 26px;
 }
 </style>
 <script>
@@ -142,12 +142,12 @@ export default {
       }
     },
     filters:{
-      //Vue 2.0瘦身了很多自带filter,能用原生写的全部清理掉
-      chineseYuan:function(val){
-        if(!val) return '0';
-        return '¥ ' + val.toFixed(2);//真正项目中需要后代反馈金额，JS会导致金额误差
-      }
-    },
+		//Vue 2.0瘦身了很多自带filter,能用原生写的全部清理掉
+		chineseYuan:function(val){
+			if(!val) return '0';
+			return '¥ ' + val.toFixed(2);//真正项目中需要后代反馈金额，JS会导致金额误差
+		}
+	},
     mounted:function(){
       this.$nextTick(function(){
         this.cartView();
@@ -158,81 +158,66 @@ export default {
             var _this = this;
             this.$http.get('/static/data/cart.json',{'id':123}).then(function(res){
                 _this.productList = res.data.result.list;
-                console.log(_this.productList)
             });
         },
         changeQuantity:function(product,type){
             if(type > 0){
                 product.productQuantity++;
-              
             }else{
                 if(product.productQuantity < 2){
                     product.productQuantity = 1;
                 }else{
                     product.productQuantity--;
-
                 }
             }
-            this.calcTotalmoney();
         },
         removeItem:function(product){
-          this.deleteClass = true;
-			    this.currentClass = product;
+            this.deleteClass = true;
+			this.currentClass = product;
         },
         removeClass:function(){
             //indexOf方法接受一个值，在数组中进行检索这个值是否存在，这个值可以使字符串、数字、和对象
-          var index = this.productList.indexOf(this.currentClass);
-          this.productList.splice(index,1);
-          this.deleteClass = false;
-          this.calcTotalmoney();//删除商品后重新计算总金额
+			var index = this.productList.indexOf(this.currentClass);
+			this.productList.splice(index,1);
+			this.deleteClass = false;
+			this.calcTotalmoney();//删除商品后重新计算总金额
         },
         calcTotalmoney:function(){
             var _this = this;
             this.totalMoney = 0;
-            this.selectedAll = true;
             this.productList.forEach(function(val,key){
-              console.log(val)
-                if(val.ischecked){
-                    _this.totalMoney += val.productPrice*val.productQuantity;
-                }else{
-                  _this.selectedAll = false;
+                if(val.isChecked){
+                    _this.totalMoney += val.productPrice*val.productQuantity
                 }
             })
-            console.log(this.selectedAll)
-            var _this = this;//用ES5方法解决this指向问题
-            //每次计算前必须清理，防止出现累计计算
-            this.totalMoney = 0;
-            this.productList.forEach(function(val,index){
-              if(val.ischecked){
-                _this.totalMoney += val.productPrice * val.productQuantity;
-              }
-            });
         },
         selectedItem:function(product){
+            console.log(product)
             if(typeof product.ischecked === 'undefined'){
-              //局部$set方法，在item里注册ischecked属性，赋值为true
-              this.$set(product,'ischecked',true);
-            }else {
-              //点击反转属性值
-              product.ischecked = !product.ischecked;
+				//局部$set方法，在item里注册ischecked属性，赋值为true
+				this.$set(product,'ischecked',true);
+			}else {
+				//点击反转属性值
+				product.ischecked = !product.ischecked;
             }
             this.calcTotalmoney();
         },
         checkAll:function(){
-            //根据传参决定是全选还是取消全选
-            this.selectedAll = !this.selectedAll;
-            var _this = this;//用ES5方法解决this指向问题
-            //forEach()，val为数据的每一项，index为每一项的索引
-            this.productList.forEach(function(val,index){
-              //同样的，因为json内没有确定是否选择的属性，我们需要自己创建一个表示每一项商品是否被选择的属性，
-              //通过局部注册来注册data里的每一项商品的ischecked属性。
-              if(typeof val.ischecked === 'undefined'){
-                _this.$set(val,'ischecked',_this.selectedAll);
-              }else {
-                val.ischecked = _this.selectedAll;
-              }
+			//根据传参决定是全选还是取消全选
+			this.selectedAll = !this.selectedAll;
+			var _this = this;//用ES5方法解决this指向问题
+			//forEach()，val为数据的每一项，index为每一项的索引
+			this.productList.forEach(function(val,index){
+				//同样的，因为json内没有确定是否选择的属性，我们需要自己创建一个表示每一项商品是否被选择的属性，
+				//通过局部注册来注册data里的每一项商品的ischecked属性。
+				if(typeof val.ischecked === 'undefined'){
+					_this.$set(val,'ischecked',_this.selectedAll);
+				}else {
+					val.ischecked = _this.selectedAll;
+				}
             });
-			      this.calcTotalmoney();// 全选/非全选 商品重新计算总金额
+            console.log(this.selectedAll)
+			this.calcTotalmoney();// 全选/非全选 商品重新计算总金额
 		},
 
     }

@@ -158,22 +158,18 @@ export default {
             var _this = this;
             this.$http.get('/static/data/cart.json',{'id':123}).then(function(res){
                 _this.productList = res.data.result.list;
-                console.log(_this.productList)
             });
         },
         changeQuantity:function(product,type){
             if(type > 0){
                 product.productQuantity++;
-              
             }else{
                 if(product.productQuantity < 2){
                     product.productQuantity = 1;
                 }else{
                     product.productQuantity--;
-
                 }
             }
-            this.calcTotalmoney();
         },
         removeItem:function(product){
           this.deleteClass = true;
@@ -189,24 +185,11 @@ export default {
         calcTotalmoney:function(){
             var _this = this;
             this.totalMoney = 0;
-            this.selectedAll = true;
             this.productList.forEach(function(val,key){
-              console.log(val)
-                if(val.ischecked){
-                    _this.totalMoney += val.productPrice*val.productQuantity;
-                }else{
-                  _this.selectedAll = false;
+                if(val.isChecked){
+                    _this.totalMoney += val.productPrice*val.productQuantity
                 }
             })
-            console.log(this.selectedAll)
-            var _this = this;//用ES5方法解决this指向问题
-            //每次计算前必须清理，防止出现累计计算
-            this.totalMoney = 0;
-            this.productList.forEach(function(val,index){
-              if(val.ischecked){
-                _this.totalMoney += val.productPrice * val.productQuantity;
-              }
-            });
         },
         selectedItem:function(product){
             if(typeof product.ischecked === 'undefined'){
@@ -216,6 +199,18 @@ export default {
               //点击反转属性值
               product.ischecked = !product.ischecked;
             }
+
+            var _this = this;
+            this.productList.forEach(function(val,index){
+              console.log(_this)
+              if(typeof val.ischecked === 'undefined'){
+                _this.selectedAll = false;
+                _this.$set(val,'ischecked',val.selectedAll);
+                return true;
+              }else{
+                _this.selectedAll = true;
+              }
+            });
             this.calcTotalmoney();
         },
         checkAll:function(){
@@ -232,7 +227,8 @@ export default {
                 val.ischecked = _this.selectedAll;
               }
             });
-			      this.calcTotalmoney();// 全选/非全选 商品重新计算总金额
+            console.log(this.selectedAll)
+			this.calcTotalmoney();// 全选/非全选 商品重新计算总金额
 		},
 
     }

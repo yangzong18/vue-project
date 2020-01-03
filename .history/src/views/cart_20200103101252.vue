@@ -164,16 +164,13 @@ export default {
         changeQuantity:function(product,type){
             if(type > 0){
                 product.productQuantity++;
-              
             }else{
                 if(product.productQuantity < 2){
                     product.productQuantity = 1;
                 }else{
                     product.productQuantity--;
-
                 }
             }
-            this.calcTotalmoney();
         },
         removeItem:function(product){
           this.deleteClass = true;
@@ -192,8 +189,8 @@ export default {
             this.selectedAll = true;
             this.productList.forEach(function(val,key){
               console.log(val)
-                if(val.ischecked){
-                    _this.totalMoney += val.productPrice*val.productQuantity;
+                if(val.isChecked){
+                    _this.totalMoney += val.productPrice*val.productQuantity
                 }else{
                   _this.selectedAll = false;
                 }
@@ -232,7 +229,8 @@ export default {
                 val.ischecked = _this.selectedAll;
               }
             });
-			      this.calcTotalmoney();// 全选/非全选 商品重新计算总金额
+            console.log(this.selectedAll)
+			this.calcTotalmoney();// 全选/非全选 商品重新计算总金额
 		},
 
     }

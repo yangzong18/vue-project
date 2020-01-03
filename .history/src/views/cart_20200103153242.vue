@@ -173,7 +173,6 @@ export default {
 
                 }
             }
-            this.calcTotalmoney();
         },
         removeItem:function(product){
           this.deleteClass = true;

@@ -2,7 +2,7 @@
   <div id="app">
     <cn-header></cn-header>
     <router-view name="main"></router-view>
-    <router-view name="left-sidebar"></router-view>
+    <router-view name="sidebar"></router-view>
   </div>
 </template>
 

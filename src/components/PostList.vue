@@ -30,11 +30,6 @@ export default {
             loading:false,
         }
 	},
-	mounted:function(){
-      this.$nextTick(function(){
-        this.getData();
-      })
-	},
 	beforeMount() {
 	    	this.loading = true;
 	    	this.getData();
@@ -46,7 +41,7 @@ export default {
 	},
 	methods:{
 		getData:function(){
-			this.$http.get('/meun').then(function(response){
+			this.$http.get('/list').then(function(response){
 				console.log(response);
 			})
 		}

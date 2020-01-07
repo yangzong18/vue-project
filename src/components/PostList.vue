@@ -46,39 +46,28 @@ export default {
 	},
 	methods:{
 		getData:function(){
-			this.$http({
-                url: 'https://cnodejs.org/api/v1/topics',
-                method: 'get',
-                params: {
-                    page: 1,
-                    limit:20,
-                }
-              })
-			  .then( (response) => {
-			  	if( response.data.success === true ){
-					this.posts = response.data.data;
-			  		this.loading = false;
-			  	}
-			  })
-			  .catch(function (error) {
-			    console.log(error);
-			  });
+			this.$http.get('/meun').then(function(response){
+				console.log(response);
+			})
 		}
 	}
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.PostList {
+		background-color: white;
+		padding: 0.5rem;
+		padding-top: 44px;
+	}
 	.PostList .posts {
 		background-color: white;
 		padding: 0.5rem;
-		margin: 0.5rem 3rem;
 	}
 	.PostList .posts li {
 		list-style: none;
-		margin-bottom: 14px;
-		border-bottom: 1px solid #E7E7E7;
-		line-height: 30px;
+		padding: 10px 15px;
+    	border-bottom: 1px solid #d5dbdb;
 	}
 	.PostList .posts ul li img {
 		width: 1.5rem;
@@ -100,7 +89,7 @@ export default {
 	    vertical-align: middle;
 	    overflow: hidden;
 	    text-overflow: ellipsis;
-	    max-width: 70%;
+	    max-width: 100%;
 	}
 	.PostList .posts a:visited {
 		color:#858585;

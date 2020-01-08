@@ -55,7 +55,8 @@ export default {
 		getUserInfo:function(){
 			this.$http({
                 url: `https://cnodejs.org/api/v1/user/${this.$route.params.name}`,
-                method: 'get',
+				method: 'get',
+				params: {params}
               })
 			  .then( (response) => {
 			  	if( response.data.success === true ){

@@ -1,21 +1,24 @@
 <template>
-    <div class="PostList">
-        <div class="loading" v-if="loading">
-	        Loading...
-	    </div>
-	    <div class="posts" v-else>
+    <div class="PostList" id="page">
+	    <div class="posts-list">
 			<ul>
 				<li v-for="post in posts">
-					<router-link v-bind:to="{name:'user_info',params:{name:post.author.loginname}}">
-						<img v-bind:src="post.author.avatar_url" v-bind:title="post.author.loginname">
-						<span>{{post.reply_count}}/{{post.visit_count}}</span>
-					</router-link>
-					<router-link v-bind:to="{name:'post_content',params:{id:post.id,name:post.author.loginname}}">
-						{{post.title}}
-					</router-link>
-					<span class="last_reply">
-						{{ post.last_reply_at | formatDate}}
-					</span>
+					<h3 :title="post.tab|getTitleStr" :class="post.tab">{{post.title}}</h3>
+					<div class="content">
+						<img v-bind:src="post.author.avatar_url" v-bind:title="post.author.loginname" class="avatar">
+						<div class="info">
+							<p>
+								<span class="name">{{post.author.loginname}}</span>
+								<span class="status"><b>{{post.reply_count}}</b>/{{post.visit_count}}</span>
+							</p>
+							
+							<p>
+								<time>{{post.create_at | formatDate}}</time>
+								<time>{{post.last_reply_at | formatDate}}</time>
+							</p>
+
+						</div>
+					</div>
 				</li>
 			</ul>
 	    </div>
@@ -27,8 +30,23 @@ export default {
     data(){
         return {
             posts:[],
-            loading:false,
+			loading:false,
+			scroll:true,
+			index: {},
+			searchKey: {
+                    page: 1,
+                    limit: 20,
+                    tab: 'all',
+                    mdrender: true
+                },
         }
+	},
+	mounted(){
+		// 滚动加载
+
+		this.$nextTick(() => {
+			window.addEventListener('scroll', this.getScrollData)
+		})
 	},
 	beforeMount() {
 	    	this.loading = true;
@@ -37,61 +55,66 @@ export default {
 	filters:{
 		timeStyle(startTime){
 			return String(startTime).match(/.{10}/)[0];
+		},
+		getTitleStr(tab){
+			let str = '';
+                switch (tab) {
+                    case 'share':
+                        str = '分享';
+                        break;
+                    case 'ask':
+                        str = '问答';
+                        break;
+                    case 'job':
+                        str = '招聘';
+                        break;
+                    case 'good':
+                        str = '精华';
+                        break;
+                    default:
+                        str = '全部';
+                        break;
+                }
+                return str;
 		}
 	},
 	methods:{
 		getData:function(){
-			this.$http.get('/list').then(function(response){
-				console.log(response);
-			})
+			this.$http({
+                url:'/api/list',
+                method: 'get',
+              })
+			  .then( (d) => {
+					this.scroll = true;
+				  if (d && d.data) {
+                        d.data.forEach(this.mergeTopics);
+                    }
+			  })
+		},
+		mergeTopics(post) {
+			if (typeof this.posts[post.id] === 'number') {
+				this.posts[post.id] = post;
+			} else {
+				this.index[post.id] = this.posts.length;
+				this.posts.push(post);
+			}
+			
+        },
+		// 滚动加载数据
+		getScrollData() {
+			if (this.scroll) {
+				window.onscroll = () => {
+					//div 的高度 多出700px
+					if (document.documentElement.scrollTop > document.getElementById('page').offsetHeight-700) {
+                        this.scroll = false;
+                        this.searchKey.page += 1;
+                        this.getData();
+                    }
+				
+				}
+			}
 		}
+			
 	}
 }
 </script>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.PostList {
-		background-color: white;
-		padding: 0.5rem;
-		padding-top: 44px;
-	}
-	.PostList .posts {
-		background-color: white;
-		padding: 0.5rem;
-	}
-	.PostList .posts li {
-		list-style: none;
-		padding: 10px 15px;
-    	border-bottom: 1px solid #d5dbdb;
-	}
-	.PostList .posts ul li img {
-		width: 1.5rem;
-		height: 1.5rem;
-	}
-	.PostList .posts li span {
-		display: inline-block;
-		text-align: center;
-		width: 70px;
-		font-size: 12px;
-		margin: 0 10px;
-	}
-	.PostList .posts a {
-		text-decoration: none;
-		color: inherit;
-	    -o-text-overflow: ellipsis;
-	    white-space: nowrap;
-	    display: inline-block;
-	    vertical-align: middle;
-	    overflow: hidden;
-	    text-overflow: ellipsis;
-	    max-width: 100%;
-	}
-	.PostList .posts a:visited {
-		color:#858585;
-	}	
-	.PostList .posts .last_reply {
-		float: right;
-   		font-size: 0.7rem;
-   	    margin-top: 0.3rem;
-	}
-</style>

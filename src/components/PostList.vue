@@ -1,7 +1,7 @@
 <template>
     <div class="PostList" id="page">
 	    <div class="posts-list">
-			<ul>
+			<ul id="post-ul-li">
 				<li v-for="post in posts">
 					<h3 :title="post.tab|getTitleStr" :class="post.tab">{{post.title}}</h3>
 					<div class="content">
@@ -104,8 +104,9 @@ export default {
 		getScrollData() {
 			if (this.scroll) {
 				window.onscroll = () => {
+					console.log(document.documentElement.scrollTop,document.getElementById('post-ul-li').offsetHeight,document.documentElement.offsetHeight)
 					//div 的高度 多出700px
-					if (document.documentElement.scrollTop > document.getElementById('page').offsetHeight-700) {
+					if (document.documentElement.scrollTop+document.documentElement.offsetHeight+44 > document.getElementById('post-ul-li').offsetHeight) {
                         this.scroll = false;
                         this.searchKey.page += 1;
                         this.getData();

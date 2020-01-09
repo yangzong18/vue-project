@@ -4,7 +4,6 @@
     </div>
 </template>
 <script>
-    require('../assets/scss/CV.scss');
     require('../assets/scss/iconfont/iconfont.css');
     require('../assets/scss/github-markdown.css');
 
@@ -14,7 +13,7 @@
                 this.$router.push({
                     name: 'list'
                 });
-            }, 2000);
+            }, 10000);
         }
     };
 </script>

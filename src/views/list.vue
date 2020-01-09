@@ -1,6 +1,12 @@
 <template>
-    <div class="PostList" id="page">
-	    <div class="posts-list">
+<!-- 全局header -->
+   
+    <div>
+         <nv-head page-type="全部" ref="head"
+                :fix-head="true"
+                :need-add="true">
+        </nv-head>
+	    <div class="posts-list" id="page">
 			<ul id="post-ul-li">
 				<li v-for="post in posts">
 					<h3 :title="post.tab|getTitleStr" :class="post.tab">{{post.title}}</h3>
@@ -25,8 +31,13 @@
     </div>
 </template>
 <script>
+import nvHead from '../components/header';
+import { getList } from '@/api/api'
 export default {
     name:'PostList',
+    components:{
+		nvHead
+	},
     data(){
         return {
             posts:[],
@@ -40,7 +51,7 @@ export default {
                     mdrender: true
                 },
         }
-	},
+    },
 	mounted(){
 		// 滚动加载
 
@@ -80,18 +91,19 @@ export default {
 	},
 	methods:{
 		getData:function(){
-			console.log(this.searchKey)
-			let params = this.searchKey;
-			this.$http({
-                url:'/api/list',
-				method: 'get',
-				data: params,
-              })
-			  .then( (d) => {
-					this.scroll = true;
-				  if (d && d.data) {
-                        d.data.forEach(this.mergeTopics);
-                    }
+			let params = {
+                    page: 1,
+                    limit: 20,
+                    tab: 'all',
+                    mdrender: true
+                };
+			getList(params).then(response => {
+				console.log(response)
+				this.scroll = true;
+				let { msg, code } = response;
+				if(code == 200 ) {
+					response.data.forEach(this.mergeTopics);
+				}
 			  })
 		},
 		mergeTopics(post) {
@@ -122,3 +134,6 @@ export default {
 	}
 }
 </script>
+<style>
+@import '../assets/css/public.css';
+</style>

@@ -1,34 +1,25 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import PostList from '@/components/PostList.vue'
-import UserInfo from '@/components/UserInfo.vue'
-import Article from '@/components/Article.vue'
-import SideBar from '@/components/SideBar.vue'
+import List from '../views/list.vue'
+import Home from '../views/index.vue'
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
       path: '/',
-      name: 'root',
-      components: {
-      	main:PostList
-      }
+      name: 'home',
+      component: Home
     },
     {
-    	path:'/user/:name',
-    	name:'user_info',
-    	components:{
-    		main:UserInfo,
-    	}
+      path: '/list',
+      name: 'list',
+      component: List
     },
     {
-    	path:'/topic/:id&auther=:name',
-    	name:'post_content',
-    	components:{
-    		main:Article,
-    		sidebar:SideBar
-    	},
-    },
-  ]
+      path: '*',
+      component: Home
+    }
+  ],
+  mode:'history'
 })

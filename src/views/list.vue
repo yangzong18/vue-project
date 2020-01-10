@@ -32,6 +32,7 @@
 </template>
 <script>
 import nvHead from '../components/header';
+import $ from 'webpack-zepto';
 import { getList } from '@/api/api'
 export default {
     name:'PostList',
@@ -89,20 +90,38 @@ export default {
                 return str;
 		}
 	},
+	beforeRouteLeave(to, from, next) {
+            $(window).off('scroll');
+            next();
+    },
+	beforeRouteEnter(to, from, next) {
+		next();
+	},
+	watch: {
+            // 切换页面
+            '$route' (to, from) {
+                // 如果是当前页面切换分类的情况
+                if (to.query && to.query.tab) {
+                    this.searchKey.tab = to.query.tab;
+                    this.posts = [];
+                    this.index = {};
+                }
+                this.searchKey.page = 1;
+                this.getData();
+                // 隐藏导航栏
+				this.$refs.head.show = false;
+				 $('body').css('overflow', 'auto');
+            }
+        },
 	methods:{
 		getData:function(){
-			let params = {
-                    page: 1,
-                    limit: 20,
-                    tab: 'all',
-                    mdrender: true
-                };
-			getList(params).then(response => {
+			let para = this.searchKey;
+			getList(para).then(response => {
 				console.log(response)
 				this.scroll = true;
-				let { msg, code } = response;
+				let { code, list } = response.data;
 				if(code == 200 ) {
-					response.data.forEach(this.mergeTopics);
+					list.forEach(this.mergeTopics);
 				}
 			  })
 		},
@@ -114,12 +133,11 @@ export default {
 				this.posts.push(post);
 			}
 			
-        },
+		},
 		// 滚动加载数据
 		getScrollData() {
 			if (this.scroll) {
 				window.onscroll = () => {
-					console.log(document.documentElement.scrollTop,document.getElementById('post-ul-li').offsetHeight,document.documentElement.offsetHeight)
 					//div 的高度 多出700px
 					if (document.documentElement.scrollTop+document.documentElement.offsetHeight+44 > document.getElementById('post-ul-li').offsetHeight) {
                         this.scroll = false;

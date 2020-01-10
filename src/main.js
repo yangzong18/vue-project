@@ -4,11 +4,13 @@ import Vue from 'vue'
 import App from './views/list'
 import router from './router'
 import axios from 'axios'
-
+import Mock from './mock'
 Vue.prototype.$http = axios;
 Vue.config.productionTip = false
-import Mock from './mock'
-Mock.start();
+if (process.env.NODE_ENV === 'development') {
+    Mock.start();
+}
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

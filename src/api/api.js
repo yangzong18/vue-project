@@ -1,5 +1,8 @@
 import axios from 'axios';
-
-export const Login = params => { return axios.post(`/login`, params) };
-export const getList = params => { return axios.get(`/list`, params ) }
-export const getUserList = params => { return axios.get(`/user/list`, { params: params }); }
+let base = '';
+if(process.env.NODE_ENV === 'production'){
+    let base = process.env.BASE_API;
+}
+export const Login = params => { return axios.post(`${base}/login`, params) };
+export const getList = params => { return axios.get(`${base}/api/list`,params) }
+export const getUserList = params => { return axios.get(`${base}/user/list`, { params: params }); }

@@ -46,19 +46,27 @@ export default {
             });
         });
         // 获取用户列表
-        mock.onGet('/list').reply(confige => {
-            let {page,limit,tab,mdrender} = JSON.parse(confige.params);
-            console.log(limit)
-            let mockUsers = _Users.filter(user => {
-                if(name && user.name.indexOf(name) == -1) return false;
-                return true;
+        mock.onGet('/api/list').reply(confige => {
+
+            let {page,limit,tab,mdrender} = confige;
+
+            let mockLists = _Lists.filter(list => {
+                switch(tab){
+                    case 'all':
+                        return true;
+                    default:
+                        if (tab && list.tab.indexOf(tab) == -1) return false;
+                        return true;
+                }
             });
+            let total = mockLists.length;
+            mockLists = mockLists.filter((u, index) => index < limit * page && index >= limit * (page - 1));
             return new Promise((resolve, reject) => {
                 setTimeout(()=> {
-                    resolve([200, {
-                        _Lists
-                    }])
+                    resolve([200,{ code: 200, msg: '请求成功', list:mockLists,total:total}]);
                 }, 1000);
+            }).catch(err=>{
+                console.log(err)
             });
         });
     }

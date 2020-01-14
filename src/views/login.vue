@@ -13,11 +13,7 @@
     </div>
 </template>
 <script>
-import nvHead from '../components/header';
 export default {
-    name:'login',
-    components:{
-        nvHead
-    }
+    name:'Login',
 }
 </script>

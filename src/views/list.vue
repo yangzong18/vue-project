@@ -91,8 +91,8 @@ export default {
 		}
 	},
 	beforeRouteLeave(to, from, next) {
-            $(window).off('scroll');
-            next();
+		$(window).off('scroll');
+		next();
     },
 	beforeRouteEnter(to, from, next) {
 		next();
@@ -110,7 +110,8 @@ export default {
                 this.getData();
                 // 隐藏导航栏
 				this.$refs.head.show = false;
-				 $('body').css('overflow', 'auto');
+				$('body').css('overflow', 'auto');
+				console.log(to)
             }
         },
 	methods:{

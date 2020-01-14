@@ -5,18 +5,26 @@ import App from './views/list'
 import router from './router'
 import axios from 'axios'
 import Mock from './mock'
+import store from './vuex/user'
+import VueRouter from 'vue-router';
 Vue.prototype.$http = axios;
 Vue.config.productionTip = false
 if (process.env.NODE_ENV === 'development') {
     Mock.start();
 }
-
+console.log(router)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  watch: {
+    '$route.path': function (newVal, oldVal) {
+        console.log(newVal)
+    }
+   }
 })
 Vue.filter('formatDate', function(str) {
   if (!str) return ''

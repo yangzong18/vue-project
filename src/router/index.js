@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import List from '../views/list.vue'
 import Home from '../views/index.vue'
 import Login from '../views/login.vue'
+import User from '../views/login.vue'
+import NotFound from '../components/404.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -23,9 +25,14 @@ export default new Router({
       component: Login
     },
     {
+      path: '/user',
+      name: 'user',
+      component: User
+    },
+    {
       path: '*',
-      component: Home
-    }
+      component: NotFound,
+    },
   ],
   mode:'history'
 })

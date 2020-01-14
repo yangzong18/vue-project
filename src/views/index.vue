@@ -8,13 +8,7 @@
     require('../assets/scss/github-markdown.css');
 
     export default {
-        mounted() {
-            setTimeout(() => {
-                this.$router.push({
-                    name: 'list'
-                });
-            }, 10000);
-        }
+        
     };
 </script>
 <style lang="scss">

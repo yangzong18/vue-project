@@ -1,7 +1,7 @@
 <template>
     <div class="login-page">
-        <nv-head page-type="登录">
-        </nv-head>
+        <!-- <nv-head page-type="登录">
+        </nv-head> -->
         <section class="page-body">
             <div class="label">
                 <input class="txt" type="text" placeholder="Access Token" maxlength="36">
@@ -13,7 +13,11 @@
     </div>
 </template>
 <script>
+// import nvHead from '../components/header.vue'
 export default {
     name:'Login',
+    mounted() {
+		document.title = this.$route.meta.title;
+	},
 }
 </script>

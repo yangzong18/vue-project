@@ -5,6 +5,16 @@
 </template>
 <script>
 export default {
-    name:'User'
+    name:'User',
+    mounted() {
+		document.title = this.$route.meta.title;
+	},
+    beforeRouteLeave(to, from, next) {
+		$(window).off('scroll');
+		next();
+    },
+	beforeRouteEnter(to, from, next) {
+		next();
+	},
 }
 </script>

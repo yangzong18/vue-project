@@ -1,12 +1,12 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+import $ from 'webpack-zepto';
 import App from './views/list'
 import router from './router'
 import axios from 'axios'
 import Mock from './mock'
 import store from './vuex/user'
-import VueRouter from 'vue-router';
 Vue.prototype.$http = axios;
 Vue.config.productionTip = false
 if (process.env.NODE_ENV === 'development') {
@@ -15,17 +15,9 @@ if (process.env.NODE_ENV === 'development') {
 console.log(router)
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
   store,
-  components: { App },
-  template: '<App/>',
-  watch: {
-    '$route.path': function (newVal, oldVal) {
-        console.log(newVal)
-    }
-   }
-})
+  router
+}).$mount('#app');
 Vue.filter('formatDate', function(str) {
   if (!str) return ''
   var date = new Date(str)

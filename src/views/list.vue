@@ -1,6 +1,5 @@
 <template>
 <!-- 全局header -->
-   
     <div>
          <nv-head page-type="全部" ref="head"
                 :fix-head="true"
@@ -35,7 +34,7 @@ import nvHead from '../components/header';
 import $ from 'webpack-zepto';
 import { getList } from '@/api/api'
 export default {
-    name:'PostList',
+	name:'PostList',
     components:{
 		nvHead
 	},
@@ -61,6 +60,7 @@ export default {
 		})
 	},
 	beforeMount() {
+			document.title = this.$route.meta.title;
 	    	this.loading = true;
 	    	this.getData();
 	    },
@@ -111,7 +111,6 @@ export default {
                 // 隐藏导航栏
 				this.$refs.head.show = false;
 				$('body').css('overflow', 'auto');
-				console.log(to)
             }
         },
 	methods:{
@@ -153,6 +152,3 @@ export default {
 	}
 }
 </script>
-<style>
-@import '../assets/css/public.css';
-</style>

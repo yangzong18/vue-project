@@ -19,7 +19,6 @@
     };
 </script>
 <style lang="scss">
-@import '../assets/css/public.css';
     .index {
         width: 100%;
         background-color: #fff;

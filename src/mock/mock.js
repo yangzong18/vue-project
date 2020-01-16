@@ -9,18 +9,17 @@ export default {
         let mock = new MockAdapter(axios); // 创建 MockAdapter 实例
         //登录
         mock.onPost('/login').reply(config => {
-            let {username, password} = JSON.parse(config.data);
+            let {account, password} = JSON.parse(config.data);
+            console.log(account,password,LoginUsers)
             return new Promise((resolve, reject) => {
                 let user = null;
                 setTimeout(() => {
                     let hasUser = LoginUsers.some(u => {
-                        if(u.username === username && u.password === password) {
+                        if(u.account === account && u.password === password) {
                             user= JSON.parse(JSON.stringify(u));
-                            user.password = undefined;
                             return true;
                         }
                     });
-                    console.log(hasUser)
                     if(hasUser) {
                         resolve([200, { code:200, msg: '登录成功', user }]);
                     } else {

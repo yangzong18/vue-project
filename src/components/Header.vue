@@ -5,7 +5,7 @@
     <header id="hd" :class="{'show':show&&fixHead,'fix-header':fixHead,'no-fix':!fixHead}">
       <div class="nv-toolbar">
         <div class="toolbar-nav" v-if="fixHead" @click="openList"></div>
-        <span>全部</span>
+        <span v-text="pageType"></span>
         <!---->
         <a href class>
           <i class="iconfont add-icon">&#xe60f;</i>

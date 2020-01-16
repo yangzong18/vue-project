@@ -5,8 +5,8 @@
                 :fix-head="true"
                 :need-add="true">
         </nv-head>
-	    <div class="posts-list" id="page">
-			<ul id="post-ul-li">
+	    <div id="page">
+			<ul class="posts-list">
 				<li v-for="post in posts">
 					<h3 :title="post.tab|getTitleStr" :class="post.tab">{{post.title}}</h3>
 					<div class="content">

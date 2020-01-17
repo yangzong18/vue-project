@@ -1,7 +1,7 @@
 <template>
 <!-- 全局header -->
     <div>
-         <nv-head page-type="全部" ref="head"
+         <nv-head :page-type="searchKey.tab|getTitleStr" ref="head"
                 :fix-head="true"
                 :need-add="true">
         </nv-head>
@@ -33,8 +33,7 @@
 import nvHead from '../components/header';
 import $ from 'webpack-zepto';
 import { getList } from '@/api/api';
-// import untils from '../libs/utils.js';
-var utils = require('../libs/utils.js');
+import untils from '../libs/utils.js';
 export default {
 	name:'PostList',
     components:{
@@ -66,32 +65,6 @@ export default {
 	    	this.loading = true;
 	    	this.getData();
 	    },
-	filters:{
-		timeStyle(startTime){
-			return String(startTime).match(/.{10}/)[0];
-		},
-		getTitleStr(tab){
-			let str = '';
-                switch (tab) {
-                    case 'share':
-                        str = '分享';
-                        break;
-                    case 'ask':
-                        str = '问答';
-                        break;
-                    case 'job':
-                        str = '招聘';
-                        break;
-                    case 'good':
-                        str = '精华';
-                        break;
-                    default:
-                        str = '全部';
-                        break;
-                }
-                return str;
-		}
-	},
 	beforeRouteLeave(to, from, next) {
 		$(window).off('scroll');
 		next();

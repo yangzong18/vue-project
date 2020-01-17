@@ -5,7 +5,7 @@
                 :fix-head="true"
                 :need-add="true">
         </nv-head>
-	    <div id="page">
+	    <section> id="page">
 			<ul class="posts-list" id="post-ul-li">
 				<li v-for="post in posts">
 					<h3 :title="post.tab|getTitleStr" :class="post.tab">{{post.title}}</h3>
@@ -26,18 +26,21 @@
 					</div>
 				</li>
 			</ul>
-	    </div>
+	    </section>
+		<nv-top></nv-top>
     </div>
 </template>
 <script>
 import nvHead from '../components/header';
+import nvTop from '../components/backtotop';
 import $ from 'webpack-zepto';
 import { getList } from '@/api/api';
 import untils from '../libs/utils.js';
 export default {
 	name:'PostList',
     components:{
-		nvHead
+		nvHead,
+		nvTop,
 	},
     data(){
         return {

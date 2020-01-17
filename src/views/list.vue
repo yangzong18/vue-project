@@ -6,7 +6,7 @@
                 :need-add="true">
         </nv-head>
 	    <div id="page">
-			<ul class="posts-list">
+			<ul class="posts-list" id="post-ul-li">
 				<li v-for="post in posts">
 					<h3 :title="post.tab|getTitleStr" :class="post.tab">{{post.title}}</h3>
 					<div class="content">
@@ -18,8 +18,8 @@
 							</p>
 							
 							<p>
-								<time>{{post.create_at | formatDate}}</time>
-								<time>{{post.last_reply_at | formatDate}}</time>
+								<time>{{post.create_at | getLastTimeStr(true)}}</time>
+								<time>{{post.last_reply_at | getLastTimeStr(true)}}</time>
 							</p>
 
 						</div>
@@ -32,7 +32,9 @@
 <script>
 import nvHead from '../components/header';
 import $ from 'webpack-zepto';
-import { getList } from '@/api/api'
+import { getList } from '@/api/api';
+// import untils from '../libs/utils.js';
+var utils = require('../libs/utils.js');
 export default {
 	name:'PostList',
     components:{
@@ -139,7 +141,7 @@ export default {
 			if (this.scroll) {
 				window.onscroll = () => {
 					//div 的高度 多出700px
-					if (document.documentElement.scrollTop+document.documentElement.offsetHeight+44 > document.getElementById('post-ul-li').offsetHeight) {
+					if (document.documentElement.scrollTop+document.documentElement.offsetHeight+40 > document.getElementById('post-ul-li').offsetHeight) {
                         this.scroll = false;
                         this.searchKey.page += 1;
                         this.getData();

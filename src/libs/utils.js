@@ -2,7 +2,6 @@
 
 import _ from 'lodash';
 import Timeago from 'timeago.js';
-
 let getCheck = {
     checkEmail(val) {
         var filter = /^([a-zA-Z0-9_\\.\\-])+\\@(([a-zA-Z0-9\\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -120,7 +119,7 @@ const MillisecondToDate = (time) => {
  * @param {string} time 需要格式化的时间
  * @param {bool} friendly 是否是fromNow
  */
-exports.getLastTimeStr = (time, friendly) => {
+const getLastTimeStr = (time, friendly) => {
     if (friendly) {
         return MillisecondToDate(time);
     } else {
@@ -136,7 +135,7 @@ exports.getLastTimeStr = (time, friendly) => {
  * @param  {Boolean} isClass [是否是样式]
  * @return {[type]}          [返回对应字符串]
  */
-exports.getTabInfo = (tab, good, top, isClass) => {
+const getTabInfo = (tab, good, top, isClass) => {
     let str = '';
     let className = '';
     if (top) {
@@ -175,7 +174,7 @@ exports.getTabInfo = (tab, good, top, isClass) => {
  * @param  {[Number]}  mustRun  [至少多久执行一次]
  * @return {[Function]}         [节流函数]
  */
-exports.throttle = (fn, wait, mustRun) => {
+const throttle = (fn, wait, mustRun) => {
     let timeout;
     let startTime = new Date();
     return function() {
@@ -194,9 +193,10 @@ exports.throttle = (fn, wait, mustRun) => {
         }
     };
 };
-
-exports.linkUsers = linkUsers;
-exports.fetchUsers = fetchUsers;
-exports.getCheck = getCheck;
-exports.fmtDate = fmtDate;
-exports.MillisecondToDate = MillisecondToDate;
+export default {
+    linkUsers,
+    fetchUsers,
+    getCheck,
+    fmtDate,
+    MillisecondToDate  
+}

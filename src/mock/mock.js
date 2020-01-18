@@ -1,9 +1,11 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { LoginUsers, Users } from './data/user'
-import { Lists } from './data/list'
+import { LoginUsers, Users } from './data/user';
+import { Lists } from './data/list';
+import { Info } from "./data/person";
 let _Users = Users,
-_Lists = Lists;
+_Lists = Lists,
+_info = Info;
 export default {
     start() { //初始化函数
         let mock = new MockAdapter(axios); // 创建 MockAdapter 实例
@@ -63,6 +65,19 @@ export default {
             return new Promise((resolve, reject) => {
                 setTimeout(()=> {
                     resolve([200,{ code: 200, msg: '请求成功', list:mockLists,total:total}]);
+                }, 1000);
+            }).catch(err=>{
+                console.log(err)
+            });
+        });
+
+         // 获取用户列表
+         mock.onGet('/api/person').reply(confige => {
+            let {loginname} = confige;
+            console.log(loginname)
+            return new Promise((resolve, reject) => {
+                setTimeout(()=> {
+                    resolve([200,{ code: 200, msg: '请求成功', _info}]);
                 }, 1000);
             }).catch(err=>{
                 console.log(err)

@@ -5,7 +5,7 @@
             <li class="login" @click="goLogin"><a >登录</a></li>
         </ul>
         <!-- 已登录 -->
-        <div class="login-yes" v-else>
+        <div class="login-yes" v-else @click="goUser">
             <div class="avertar"><img src="userInfo.avatar_url"></div>
             <div class="info">
                 <p>{{userInfo.loginname}}</p>
@@ -34,6 +34,14 @@ export default {
                     }
                 });
             },
+            goUser:function(){
+                this.$router.push({
+                    name: 'user',
+                    params: {
+                        loginname: this.userInfo.loginname
+                    }
+                });
+            }
     },
     watch: {
         // 切换页面

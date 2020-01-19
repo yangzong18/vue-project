@@ -4,12 +4,13 @@
     </div>
     <header id="hd" :class="{'show':show&&fixHead,'fix-header':fixHead,'no-fix':!fixHead}">
       <div class="nv-toolbar">
-        <div class="toolbar-nav" v-if="fixHead" @click="openList"></div>
+        <div class="toolbar-nav" @click="openList" v-if="fixHead">
+        </div>
         <span v-text="pageType"></span>
-        <!---->
-        <a href class>
+        <i class="num" v-if="messageCount > 0"> {{messageCount}}</i>
+        <router-link to="/add">
           <i class="iconfont add-icon">&#xe60f;</i>
-        </a>
+        </router-link>
       </div>
     </header>
     <left-bar :show-menu="show" v-if="fixHead" :page-type="pageType" :nick-name="nickname" :profile-url="profileimgurl"></left-bar>

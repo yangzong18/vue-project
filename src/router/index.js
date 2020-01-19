@@ -10,6 +10,8 @@ import User from '../views/user.vue'
 import About from '../views/about.vue'
 import NotFound from '../components/404.vue'
 import Message from '../views/message.vue'
+import Topic from '../views/topic.vue'
+import Add from '../views/add.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -30,6 +32,24 @@ export default new Router({
       component: List,
       meta:{
         title: '文章列表',
+        keepAlive: false
+      }
+    },
+    {
+      path: '/topic/:id',
+      name: 'topic',
+      component: Topic,
+      meta:{
+        title: '文章详情',
+        keepAlive: false
+      }
+    },
+    {
+      path: '/add',
+      name: 'add',
+      component: Add,
+      meta:{
+        title: '添加文章',
         keepAlive: false
       }
     },

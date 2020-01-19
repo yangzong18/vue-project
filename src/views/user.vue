@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nv-head page-type="用户信息" :show-menu="false"></nv-head>
+    <nv-head page-type="用户信息" :show-menu="false" :fix-head="true" :need-add="false"></nv-head>
     <section class="userinfo">
       <img :src="user.avatar_url" alt class="u-img" />
       <br />
@@ -43,7 +43,7 @@
 import $ from "webpack-zepto";
 import utils from "../libs/utils.js";
 import nvHead from "../components/header.vue";
-import { getPersonCenter } from "../api/api";
+import { getUserInfo } from "../api/api";
 export default {
   name: "User",
   replace:true,
@@ -79,21 +79,18 @@ export default {
         });
         return false;
       }
-      let params = { loginname: loginname };
-
-      getPersonCenter(params).then(response => {
-        let { code, info } = response.data;
-        console.log(info);
-        if (code == 200) {
-          this.user = info;
-          if (info.recent_replies.length > 0) {
-            this.currentData = info.recent_replies;
-          } else {
-            this.currentData = info.recent_topics;
-            this.selectItem = 2;
+      console.log(loginname)
+      getUserInfo(loginname).then(d => {
+        if (d && d.data) {
+            let data = d.data;
+            this.user = data;
+            if (data.recent_replies.length > 0) {
+                this.currentData = data.recent_replies;
+            } else {
+                this.currentData = data.recent_topics;
+                this.selectItem = 2;
+            }
           }
-          console.log(this.currentData)
-        }
       });
     }
   },

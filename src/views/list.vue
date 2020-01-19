@@ -78,6 +78,8 @@ export default {
 	watch: {
             // 切换页面
             '$route' (to, from) {
+				this.$refs.head.show = false;
+				console.log(to,from)
                 // 如果是当前页面切换分类的情况
                 if (to.query && to.query.tab) {
                     this.searchKey.tab = to.query.tab;
@@ -87,7 +89,7 @@ export default {
                 this.searchKey.page = 1;
                 this.getData();
                 // 隐藏导航栏
-				this.$refs.head.show = false;
+				
 				$('body').css('overflow', 'auto');
             }
         },

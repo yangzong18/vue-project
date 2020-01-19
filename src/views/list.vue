@@ -93,13 +93,12 @@ export default {
         },
 	methods:{
 		getData:function(){
-			let para = this.searchKey;
-			getList(para).then(response => {
-				console.log(response)
+			let para = $.param(this.searchKey);
+			getList(para).then(res => {
+				console.log(res)
 				this.scroll = true;
-				let { code, list } = response.data;
-				if(code == 200 ) {
-					list.forEach(this.mergeTopics);
+				if (res && res.data) {
+					res.data.forEach(this.mergeTopics);
 				}
 			  })
 		},

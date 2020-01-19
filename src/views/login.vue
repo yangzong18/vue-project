@@ -1,84 +1,65 @@
 <template>
     <div class="login-page">
-        <nv-head page-type="登录"></nv-head>
+        <nv-head page-type="登录">
+        </nv-head>
         <section class="page-body">
             <div class="label">
-                <input class="txt" type="text" placeholder="User Name" maxlength="36" v-model="accountForm.account ">
+                <input class="txt" type="text" placeholder="Access Token" v-model="token" maxlength="36">
             </div>
             <div class="label">
-                <input class="txt" type="password" placeholder="Password" maxlength="36" v-model="accountForm.password">
-            </div>
-            <div class="label">
-                <input class="remember" type="checkbox" checked >
-                <span>记住密码</span>
-            </div>
-            <div class="label">
-                <a class="button" @click="loginon">登录</a>
+                <a class="button" @click="logon">登录</a>
             </div>
         </section>
     </div>
 </template>
-<script>
-import nvHead from '../components/header.vue'
-import { Login } from "../api/api";
-import $ from 'webpack-zepto';
-export default {
-    name:'Login', 
-    mounted() {
-        document.title = this.$route.meta.title;
-    },
-    data(){
-        return {
-            accountForm: {
-                account: 'walker1838',
-                password: '123456'
-            }
-        }
-    },
-    components:{
-        nvHead
-    },
-    methods:{
-        loginon:function(){
-            if (this.accountForm.username === '') {
-                this.$alert('用户名不能为空');
-                return false;
-            }
-            if (this.accountForm.password === '') {
-                this.$alert('密码不能为空');
-                return false;
-            }
-            
-            Login(this.accountForm)
-            .then(response => {
-				this.scroll = true;
-                let { code, user,msg} = response.data;
-                console.log(user)
-				if(code == 200 ) {
-					let loginAccount = {
-                            loginname: user.account,
-                            avatar_url: user.avatar_url,
-                            userId: user.id,
-                            token: user.token
-                        };
-                    window.sessionStorage.user = JSON.stringify(loginAccount);
-                    this.$store.dispatch('setUserInfo',loginAccount);    
-                    let redirect = decodeURIComponent(this.$route.query.redirect|| '/');
-                    this.$router.push({
-                        path:redirect
-                    })
-				}else{
-                    this.$alert(msg)
-                }
-			  })
-              
 
+<script>
+    import $ from 'webpack-zepto';
+    import nvHead from '../components/header.vue';
+    import {Login} from '@/api/api';
+
+    export default {
+        data() {
+            return {
+                token: ''
+            };
+        },
+        methods: {
+            logon() {
+                if (this.token === '') {
+                    this.$alert('令牌格式错误,应为36位UUID字符串');
+                    return false;
+                }
+                let params = {accesstoken:this.token};
+                Login(params).then(res=>{
+                    console.log(res)
+                    if(res.success && res){
+                        let user = {
+                            loginname: res.loginname,
+                            avatar_url: res.avatar_url,
+                            userId: res.id,
+                            token: this.token
+                        };
+                        window.sessionStorage.user = JSON.stringify(user);
+                        this.$store.dispatch('setUserInfo', user);
+                        let redirect = decodeURIComponent(this.$route.query.redirect || '/');
+                        this.$router.push({
+                            path: redirect
+                        });
+                    }else{
+                        var error = JSON.parse(res.responseText);
+                        this.$alert(error.error_msg);
+                    }
+                })
+            }
+        },
+        components: {
+            nvHead
         }
-    }
-}
+    };
 </script>
 <style lang="scss">
-.page-body {
+    .page-body {
         padding: 50px 15px;
         min-height: 400px;
         background-color: #fff;

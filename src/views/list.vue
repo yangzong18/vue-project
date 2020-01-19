@@ -5,7 +5,7 @@
                 :fix-head="true"
                 :need-add="true">
         </nv-head>
-	    <section> id="page">
+	    <section id="page">
 			<ul class="posts-list" id="post-ul-li">
 				<li v-for="post in posts">
 					<h3 :title="post.tab|getTitleStr" :class="post.tab">{{post.title}}</h3>

@@ -77,7 +77,7 @@ export default {
             console.log(loginname)
             return new Promise((resolve, reject) => {
                 setTimeout(()=> {
-                    resolve([200,{ code: 200, msg: '请求成功', _info}]);
+                    resolve([200,{ code: 200, msg: '请求成功', info:_info}]);
                 }, 1000);
             }).catch(err=>{
                 console.log(err)

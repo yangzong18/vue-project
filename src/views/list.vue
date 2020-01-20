@@ -8,6 +8,7 @@
 	    <section id="page">
 			<ul class="posts-list" id="post-ul-li">
 				<li v-for="post in posts">
+					<router-link :to="{name:'topic',params:{id:post.id}}">
 					<h3 :title="post.tab|getTitleStr" :class="post.tab">{{post.title}}</h3>
 					<div class="content">
 						<img v-bind:src="post.author.avatar_url" v-bind:title="post.author.loginname" class="avatar">
@@ -24,6 +25,7 @@
 
 						</div>
 					</div>
+					</router-link>
 				</li>
 			</ul>
 	    </section>
@@ -78,8 +80,7 @@ export default {
 	watch: {
             // 切换页面
             '$route' (to, from) {
-				this.$refs.head.show = false;
-				console.log(to,from)
+				
                 // 如果是当前页面切换分类的情况
                 if (to.query && to.query.tab) {
                     this.searchKey.tab = to.query.tab;
@@ -89,8 +90,8 @@ export default {
                 this.searchKey.page = 1;
                 this.getData();
                 // 隐藏导航栏
-				
-				$('body').css('overflow', 'auto');
+				this.$refs.head.show = false;
+				$('body').css('overflow','auto');
             }
         },
 	methods:{

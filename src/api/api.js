@@ -5,4 +5,4 @@ export const getList = params => { return axios.get(`${base}/topics?`+params).th
 export const getUserList = params => { return axios.get(`${base}/user/list`, { params: params }); }
 export const getUserInfo = loginname =>{ return axios.get(`${base}/user/`+loginname).then(res => res.data);}
 export const getTopic = topicId => { return axios.get(`${base}/topic/`+topicId).then(res => res.data);}
-export const getReply = params => { return axios.post(`${base}/reply/`+params.id+`/ups`,{accessToken:params.accessToken}).then(res => res.data);}
+export const getReply = params => { return axios.post(`${base}/reply/`+params.id+`/ups`,{accessToken:params.accessToken}).then(res => res.data).catch(error);}

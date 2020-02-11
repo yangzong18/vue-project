@@ -43,7 +43,7 @@
 import $ from "webpack-zepto";
 import utils from "../libs/utils.js";
 import nvHead from "../components/header.vue";
-import { getUserInfo } from "../api/api";
+import { getUserInfo } from "@/service";
 export default {
   name: "User",
   replace:true,
@@ -81,16 +81,16 @@ export default {
       }
       console.log(loginname)
       getUserInfo(loginname).then(d => {
-        if (d && d.data) {
-            let data = d.data;
-            this.user = data;
-            if (data.recent_replies.length > 0) {
-                this.currentData = data.recent_replies;
-            } else {
-                this.currentData = data.recent_topics;
-                this.selectItem = 2;
-            }
+        if(d.data.success){
+          let data = d.data.data;
+          this.user = data;
+          if (data.recent_replies.length > 0) {
+              this.currentData = data.recent_replies;
+          } else {
+              this.currentData = data.recent_topics;
+              this.selectItem = 2;
           }
+        }
       });
     }
   },

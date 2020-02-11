@@ -51,19 +51,33 @@
                     {{repliy.ups.length}}
                     <span
                       class="iconfont icon"
-                      @click="addReply(reply.id)"
+                      @click="addReply(repliy.id)"
                     >&#xe609;</span>
                   </span>
                 </div>
               </section>
               <div class="reply_content" v-html="repliy.content"></div>
               <nv-top></nv-top>
-              <nv-reply v-if="userInfo.userId && curReplyId === reply.id" :topic="topic" :topicId="topic.id"></nv-reply>
+              <nv-reply
+                :topic.sync="topic"
+                :topic-id="topicId"
+                :reply-id="repliy.id"
+                :reply-to="repliy.author.loginname"
+                :show.sync="curReplyId"
+                @close="hideItemReply"
+                v-if="userInfo.userId && curReplyId === repliy.id"
+              ></nv-reply>
               <!---->
             </li>
           </ul>
         </section>
+        <nv-top></nv-top>
+        <nv-reply v-if="userInfo.userId" :topic="topic" :topic-id="topicId"></nv-reply>
       </div>
+    </div>
+    <div class="no-data" v-if="noData">
+      <i class="iconfont icon-empty">&#xe60a;</i>
+      该话题不存在!
     </div>
   </div>
 </template>
@@ -71,7 +85,7 @@
 import nvHead from "../components/header";
 import nvReply from "../components/reply";
 import nvTop from "../components/backtotop";
-import { getTopic, getReply } from "@/api/api";
+import { getTopic, getReply } from "@/service";
 import utils from "../libs/utils";
 import $ from "webpack-zepto";
 import { mapGetters } from "vuex";
@@ -82,7 +96,8 @@ export default {
       showMenu: false,
       topicId: "",
       topic: {},
-      noData: false
+      noData: false,
+      curReplyId: ""
     };
   },
   created() {
@@ -105,13 +120,16 @@ export default {
       // 获取url传的tab参数
       this.topicId = this.$route.params.id;
       getTopic(this.topicId).then(res => {
-        console.log(res);
-        if (res && res.data) {
-          this.topic = res.data;
+        console.log(res.data.data);
+        if (res.data.success) {
+          this.topic = res.data.data;
         } else {
-          this.noData = true;
+          ths.noData = true;
         }
       });
+    },
+    hideItemReply() {
+      this.curReplyId = "";
     },
     getTabInfo(tab, good = false, top, isClass) {
       return utils.getTabInfo(tab, good, top, isClass);
@@ -129,16 +147,21 @@ export default {
         });
       } else {
         let par = { id: repliy.id, accessToken: this.userInfo.token };
-        getReply(par).then(res => {
-          if (res && res.data) {
-            if (res.action === "down") {
-              let index = $.inArray(this.userInfo.userId, repliy.ups);
-              repliy.ups.splice(index, 1);
-            } else {
-              repliy.ups.push(this.userInfo.userId);
+        getReply(par)
+          .then(res => {
+            if (res.data.success) {
+              if (res.data.data.action === "down") {
+                let index = $.inArray(this.userInfo.userId, repliy.ups);
+                repliy.ups.splice(index, 1);
+              } else {
+                repliy.ups.push(this.userInfo.userId);
+              }
             }
-          }
-        });
+          })
+          .catch(error => {
+            console.log(error.statusText);
+            this.$alert(error.statusText);
+          });
       }
     },
     addReply(id) {

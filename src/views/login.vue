@@ -16,7 +16,7 @@
 <script>
     import $ from 'webpack-zepto';
     import nvHead from '../components/header.vue';
-    import {Login} from '@/api/api';
+    import {Login} from '@/service';
 
     export default {
         data() {
@@ -32,12 +32,11 @@
                 }
                 let params = {accesstoken:this.token};
                 Login(params).then(res=>{
-                    console.log(res)
-                    if(res.success && res){
+                    if(res.data.success){
                         let user = {
-                            loginname: res.loginname,
-                            avatar_url: res.avatar_url,
-                            userId: res.id,
+                            loginname: res.data.loginname,
+                            avatar_url: res.data.avatar_url,
+                            userId: res.data.id,
                             token: this.token
                         };
                         window.sessionStorage.user = JSON.stringify(user);
@@ -47,9 +46,11 @@
                             path: redirect
                         });
                     }else{
-                        var error = JSON.parse(res.responseText);
-                        this.$alert(error.error_msg);
+                        this.$alert(res.data.error_msg);
                     }
+                }).catch(error=>{
+                    this.$alert(error.data.error_msg);
+
                 })
             }
         },

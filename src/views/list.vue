@@ -36,7 +36,7 @@
 import nvHead from '../components/header';
 import nvTop from '../components/backtotop';
 import $ from 'webpack-zepto';
-import { getList } from '@/api/api';
+import {getList} from '@/service';
 import untils from '../libs/utils.js';
 export default {
 	name:'PostList',
@@ -98,10 +98,10 @@ export default {
 		getData:function(){
 			let para = $.param(this.searchKey);
 			getList(para).then(res => {
-				console.log(res)
 				this.scroll = true;
-				if (res && res.data) {
-					res.data.forEach(this.mergeTopics);
+				console.log(res.data)
+				if (res.data.success) {
+					res.data.data.forEach(this.mergeTopics);
 				}
 			  })
 		},

@@ -22,16 +22,11 @@ export default {
     return Ax.post('/topic/'+topicId+'/replies',qs.stringify(params));
   },
   
-  fetchBlog (reqData) {
-    return Ax.get('/krryblog/blog/getBlog', {params: reqData});
+  addTopic (data) {
+    return Ax.post('/topics', qs.stringify(data));
   },
-  addBlog (reqData) {
-    return Ax.post('/krryblog/blog/addBlog', qs.stringify(reqData));
-  },
-  updateBlog (reqData) {
-    return Ax.post('/krryblog/blog/updateBlog', qs.stringify(reqData));
-  },
-  deleteBlogCover (id, reqData) {
-    return Ax.post(`/krryblog/blog/deleteBlogCover/${id}`, qs.stringify(reqData));
-  },
+  getMsg(token){
+    return Ax.get('/messages?accesstoken='+token);
+
+  }
 };

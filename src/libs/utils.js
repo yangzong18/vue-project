@@ -200,5 +200,6 @@ export default {
     getCheck,
     fmtDate,
     MillisecondToDate,
-    getTabInfo
+    getTabInfo,
+    getLastTimeStr
 }

@@ -23,3 +23,14 @@ export async function replyTo (id, reqData) {
   let res = await Api.replyTo(id, reqData);
   return res;
 }
+
+export async function  addTopic(params) {
+  let res = await Api.addTopic(params);
+  return res;
+}
+
+export async function getMsg(token) {
+  let res = await Api.getMsg(token);
+  return res;
+  
+}

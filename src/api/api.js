@@ -1,8 +1,25 @@
 import axios from 'axios';
-let base = process.env.BASE_API;
-export const Login = params => { return axios.post(`${base}/accesstoken`,params).then(res => res.data) };
-export const getList = params => { return axios.get(`${base}/topics?`+params).then(res => res.data); }
-export const getUserList = params => { return axios.get(`${base}/user/list`, { params: params }); }
-export const getUserInfo = loginname =>{ return axios.get(`${base}/user/`+loginname).then(res => res.data);}
-export const getTopic = topicId => { return axios.get(`${base}/topic/`+topicId).then(res => res.data);}
-export const getReply = params => { return axios.post(`${base}/reply/`+params.id+`/ups`,{accessToken:params.accessToken}).then(res => res.data).catch(error);}
+
+let base = '';
+
+export const requestLogin = params => { return axios.post(`${base}/login`, params).then(res => res.data); };
+
+export const requestRegister = params => { return axios.post(`${base}/register`, params).then(res => res.data); };
+
+export const getUserList = params => { return axios.get(`${base}/user/list`, { params: params }); };
+
+export const getCustomerList = params => { return axios.get(`${base}/customer/list`, { params: params }); };
+
+export const getCustomerListPage = params => { return axios.get(`${base}/customer/listpage`, { params: params }); };
+
+export const addCustomer = params => { return axios.get(`${base}/customer/add`, { params: params }); };
+
+export const getUserListPage = params => { return axios.get(`${base}/user/listpage`, { params: params }); };
+
+export const removeUser = params => { return axios.get(`${base}/user/remove`, { params: params }); };
+
+export const batchRemoveUser = params => { return axios.get(`${base}/user/batchremove`, { params: params }); };
+
+export const editUser = params => { return axios.get(`${base}/user/edit`, { params: params }); };
+
+export const addUser = params => { return axios.get(`${base}/user/add`, { params: params }); };

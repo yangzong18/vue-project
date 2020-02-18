@@ -4,7 +4,7 @@ import qs from 'qs';
 export default {
 
   login(params){
-    return Ax.post(`/accesstoken`,qs.stringify(params))
+    return Ax.post(`/login`,qs.stringify(params))
   },
   getList(params){
     return Ax.get(`/topics?`+params)

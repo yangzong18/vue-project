@@ -2,19 +2,20 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 // 引入组件
-import List from '../views/list'
-// import List from '../views/list.vue'
-import Home from '../views/index.vue'
-import Login from '../views/login.vue'
-import User from '../views/user.vue'
-import About from '../views/about.vue'
-import NotFound from '../components/404.vue'
-import Message from '../views/message.vue'
-import Topic from '../views/topic.vue'
-import Add from '../views/add.vue'
+import Home from '@/components/home.vue'
+import Blog from '@/components/blog/blog.vue'
+import Music from '@/components/music/music.vue'
+import MusicSheet from '@/components/music/sheet/sheet.vue'
+import MusicSearch from '@/components/music/search/search.vue'
+import MusicSearchList from '@/components/music/search/searchList.vue'
+import MusicAlbumList from '@/components/music/albumlist/albumlist.vue'
+import DGlobal from '@/common/js/global.js'
+import store from '@/store'
+import Login from '@/components/user/login/login.vue'
+import User from '@/components/user/user.vue'
+import UserInfo from '@/components/user/info/info.vue'
 Vue.use(Router)
-
-export default new Router({
+const myRouter = new Router({
   mode:'history',
   routes: [
     {
@@ -27,75 +28,74 @@ export default new Router({
       }
     },
     {
-      path: '/list',
-      name: 'list',
-      component: List,
-      meta:{
-        title: '文章列表',
-        keepAlive: false
-      }
+      path: '/home',
+      component: Home
     },
     {
-      path: '/topic/:id',
-      name: 'topic',
-      component: Topic,
-      meta:{
-        title: '文章详情',
-        keepAlive: false
-      }
+      // 博客
+      path: '/blog',
+      component: Blog
     },
     {
-      path: '/add',
-      name: 'add',
-      component: Add,
-      meta:{
-        title: '添加文章',
-        keepAlive: false
-      }
+      // 音乐
+      path: '/music',
+      component: Music,
+      children: [
+        {
+          path: '/',
+          redirect: store.getters.getMusicRouter,
+          meta: {
+            auth: true
+          },
+          components: {
+            listinfo: MusicSheet
+          }
+        },
+        {
+          path: '/music/search',
+          meta: {
+            auth: true
+          },
+          components: {
+            fullscreen: MusicSearch
+          }
+        },
+        {
+          path: '/music/albumlist/:id',
+          meta: {
+            auth: true
+          },
+          name: 'albumlist',
+          components: {
+            listinfo: MusicAlbumList
+          }
+        },
+      ]
     },
     {
-      path: '/login',
-      name: 'login',
-      component: Login,
-      meta:{
-        title: '登录',
-        keepAlive: false
-      }
-    },
-    {
-      path: '/user/:loginname',
-      name: 'user',
-      component: User,
-      meta:{
-        title: '个人中心',
-        keepAlive: false
-      }
-    },
-    {
-      path: '/about',
-      name: 'about',
-      component: About,
-      meta:{
-        title: '关于',
-        keepAlive: false
-      }
-    },
-    {
-      path: '/message',
-      name: 'message',
-      component: Message,
-      meta:{
-        title: '信息',
-        keepAlive: false
-      }
-    },
-    {
-      path: '*',
-      component: NotFound,
-      meta:{
-        title: '404',
-        keepAlive: false
-      }
+      path: '/user/login',
+      component: Login
     },
   ]
 });
+myRouter.beforeEach((to, from, next) => {
+  if (DGlobal.storage.getCookie('c_user_info') && !store.getters.getUserInfo) {
+    DGlobal.storage.setCookie('c_user_info', unescape(DGlobal.storage.getCookie('c_user_info')), 60 * 60 * 1000 * 24)
+    store.dispatch({
+      type: 'set_UserInfo',
+      data: JSON.parse(unescape(DGlobal.storage.getCookie('c_user_info')))
+    })
+  }
+
+  if (to.meta && to.meta.auth) {
+    if (store.getters.getUserInfo) {
+      next()
+    } else {
+      const url = encodeURIComponent(to.fullPath)
+      next(`/user/login?redirect_url=${url}`)
+    }
+  } else {
+    next()
+  }
+})
+export default myRouter

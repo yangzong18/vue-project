@@ -1,26 +1,24 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import './assets/scss/CV.scss';
-import $ from 'webpack-zepto';
-import App from './views/list'
+import App from './App'
+import store from '@/store'
 import router from './router'
-import axios from 'axios'
-import store from './vuex/user'
-import Alert from './libs/alert';
-import filters from './filters';
-console.log(filters)
-Vue.use(Alert);
-Vue.prototype.$http = axios;
-Vue.config.productionTip = false
-// 处理刷新的时候vuex被清空但是用户已经登录的情况
-if (window.sessionStorage.user) {
-    store.dispatch('setUserInfo', JSON.parse(window.sessionStorage.user));
+import '../static/font-icon/style.css'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+import Msg from 'vue-message'
+import Mock from './mock'
+if (process.env.NODE_ENV === 'development') {
+  Mock.start();
 }
-// 实例化Vue的filter
-Object.keys(filters).forEach(k => Vue.filter(k, filters[k]));
+Vue.use(Msg, {text: 'Hello world', duration: 3000, background: 'rgba(7,17,27,0.6)'})
+Vue.use(ElementUI)
 /* eslint-disable no-new */
 new Vue({
+  el: '#app',
   store,
-  router
-}).$mount('#app');
+  router,
+  template: '<App/>',
+  render: h => h(App)
+})

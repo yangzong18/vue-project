@@ -15,7 +15,7 @@ for (let i = 0; i <= 90; i++) {
 const LoginUsers = [ // 制造登录账号，便于模拟登陆测试
     {
         id: 1,
-        account: 'admin1',
+        username: 'admin1',
         password: '123456',
         name: '王某某',
         avatar_url:Mock.Random.image('120x120','','#FFF','王某某'),
@@ -23,7 +23,7 @@ const LoginUsers = [ // 制造登录账号，便于模拟登陆测试
     },
     {
         id: 2,
-        account: 'admin2',
+        username: 'admin2',
         password: '123456',
         name: '陈某某',
         avatar_url:Mock.Random.image('120x120','','#FFF','陈某某'),
@@ -31,7 +31,7 @@ const LoginUsers = [ // 制造登录账号，便于模拟登陆测试
     },
     {
         id: 3,
-        account: 'walker1838',
+        username: 'walker1838',
         password: '123456',
         name: '杨鹏',
         avatar_url:Mock.Random.image('120x120','','#FFF','杨鹏'),

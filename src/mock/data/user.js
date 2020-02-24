@@ -4,7 +4,7 @@ let Users = []; // 定义我们需要的数据
 for (let i = 0; i <= 90; i++) {
       Users.push(Mock.mock({ // 根据数据模板生成模拟数据
         id: '@in', // 随机生成一个id
-        name: Mock.Random.cname(), // 随机生成一个常见的中文姓名。
+        username: Mock.Random.cname(), // 随机生成一个常见的中文姓名。
         addr: Mock.mock('@county(true)'), // @county(true)为数据模板
         'age|18-60': 1, // 'age|18-60': 1 为数据模板
         birth: Mock.Random.date(), // 随机生成日期

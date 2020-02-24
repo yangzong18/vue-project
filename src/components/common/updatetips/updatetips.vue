@@ -25,7 +25,6 @@
 import DGlobal from "@/common/js/global.js";
 import fecth from "@/utils/fecth.js";
 import API from "@/config/api";
-// import store from './../../../store'
 export default {
   data() {
     return {

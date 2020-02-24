@@ -1,5 +1,5 @@
 const HOST = process.env.HOST || 'https://www.daiwei.site'
-let base = '';
+const base = 'http://api.netease.com'
 const api = {
   // 设置的请求host地址
   HOST,
@@ -74,7 +74,7 @@ const api = {
   GET_PERSONAL_INFO: `${HOST}/php/web_v2_api/user.php?inAjax=1&do=personalCenter`,
 
   // 登陆
-  LOGIN: `/api/login`,
+  LOGIN: `${base}/login/cellphone`,
 
   // 注册
   SINGIN: `${HOST}/php/web_v2_api/user.php?inAjax=1&do=singin`

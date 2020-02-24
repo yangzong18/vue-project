@@ -6,12 +6,11 @@ import DGlobal from '@/common/js/global.js'
 // request拦截器
 axios.interceptors.request.use(
   config => {
-  // loading
-  // console.log('loadding')
    store.dispatch({
     type: 'set_ShowLoading',
     data: true
   })
+
   return config
 }, error => {
   // Do something with request error
@@ -125,7 +124,7 @@ export default {
       (response) => {
         return checkStatus(response)
       }
-    ).then(
+    ).catch(
       (res) => {
         return checkCode(res)
       }

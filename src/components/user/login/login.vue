@@ -36,7 +36,7 @@
 import fecth from "@/utils/fecth.js";
 import { Utils } from "@/common/js/Utils.js";
 import API from "@/config/api";
-import { requestLogin } from "@/api/api.js";
+import { requestLogin, requestRegister } from "@/api/api.js";
 import { Storage } from "@/common/js/Storage.js";
 export default {
   name: "login",
@@ -45,8 +45,8 @@ export default {
       // 0 是登录  1是注册
       status: 0,
       showSinginThen: false,
-      username: "walker1838",
-      password: "123456",
+      username: "15228876961",
+      password: "Walker123456",
       susername: "",
       spassword: "",
       rightSigninName: ""
@@ -64,68 +64,61 @@ export default {
         this.$msg("请输入用户名");
         return;
       }
-      requestLogin({
-        username: this.username,
-        password: this.password,
-        lastlogin: Utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
-        path: process.env.NODE_ENV
-      }).then(response => {
-        this.scroll = true;
-        let { code, user, msg } = response;
-        console.log(JSON.stringify(user));
-        if (code == 200) {
-          Storage.setCookie(
-            "c_user_info",
-            JSON.stringify(user),
-            60 * 60 * 1000 * 24
-          );
-          this.$store.dispatch("set_UserInfo", user);
-          if (this.$route.query["redirect_url"]) {
-            const url = decodeURIComponent(this.$route.query["redirect_url"]);
-            this.$router.push(url);
-          } else {
-            this.$router.push("/home");
-          }
-        } else {
-          this.$msg(msg);
-        }
-      });
+      fecth.get(API.LOGIN, {
+					phone: this.username,
+					pw: this.password,
+				}).then((res) => {
+					if (res.status === 200) {
+						Storage.setCookie('c_user_info', JSON.stringify(res.data.account), 60 * 60 * 1000 * 24)
+						this.$store.dispatch('set_UserInfo', res.data.account)
+						const url = decodeURIComponent(this.$route.query['redirect_url'])
+						if (url) {
+							this.$router.push(url)
+						} else {
+							this.$router.push('/home')
+						}
+					} else {
+						this.$msg(res.data.msg)
+					}
+				}, (err) => {
+					alert(`数据请求错误: ${JSON.stringify(err)}`)
+				})
     },
     singin() {
-      if (this.username === "") {
+      if (this.susername === "") {
         this.$msg("请输入用户名");
         return;
       }
-      fecth
-        .post(API.LOGIN, {
-          username: this.susername,
-          password: this.spassword,
-          lastlogin: Utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
-          path: process.env.NODE_ENV
-        })
-        .then(
-          res => {
-            if (res.data.code === "1") {
-              Storage.setCookie(
-                "c_user_info",
-                JSON.stringify(res.data),
-                60 * 60 * 1000 * 24
-              );
-              this.$store.dispatch("set_UserInfo", res.data);
+      requestRegister({
+        username: this.susername,
+        password: this.spassword,
+        lastlogin: Utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
+        path: process.env.NODE_ENV
+      }).then(
+        response => {
+          let { code, user, msg } = response;
+          console.log(code)
+          if (code == 200) {
+            Storage.setCookie(
+              "c_user_info",
+              JSON.stringify(user),
+              60 * 60 * 1000 * 24
+            );
+            this.$store.dispatch("set_UserInfo", user);
+            if (this.$route.query["redirect_url"]) {
               const url = decodeURIComponent(this.$route.query["redirect_url"]);
-              if (url) {
-                this.$router.push(url);
-              } else {
-                this.$router.push("/home");
-              }
+              this.$router.push(url);
             } else {
-              this.$msg(res.data.msg);
+              this.$router.push("/home");
             }
-          },
-          err => {
-            alert(`数据请求错误: ${JSON.stringify(err)}`);
+          } else {
+            this.$msg(msg);
           }
-        );
+        },
+        err => {
+          alert(`数据请求错误: ${JSON.stringify(err)}`);
+        }
+      );
     }
   }
 };

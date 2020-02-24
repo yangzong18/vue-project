@@ -73,7 +73,7 @@
         <router-link v-else class="listmenu" tag="a" to="/user/login">
           登陆
         </router-link>
-        <a href="https://www.github.com/ifmiss/vue-website" target="_black">
+        <a href="https://github.com/yangzong18/vue-project/tree/vue-website" target="_black">
           <li class="li-icon" title="github"><i class="icon-github"></i></li>
         </a>
         <router-link tag="a" to="/setting" class="a-icon">

@@ -3,6 +3,7 @@ import MockAdapter from 'axios-mock-adapter';
 import { LoginUsers, Users } from './data/user';
 import { Lists } from './data/list';
 import { Info } from "./data/person";
+import Mock from 'mockjs';
 let _Users = Users,
 _Lists = Lists,
 _info = Info;
@@ -25,6 +26,36 @@ export default {
                         resolve([200, { code:200, msg: '登录成功', user }]);
                     } else {
                         resolve([200, { code: 500, msg: '账号或者密码错误' }]);
+                    }
+                },1000);
+            });
+        });
+
+        // 注册功能
+        mock.onPost('/register').reply(confige => {
+            let {username, password} = JSON.parse(confige.data);
+            return new Promise((resolve, reject) => {
+                let user = null;
+                setTimeout(() => {
+                    let hasUser = LoginUsers.some(u => {
+                        if(username && u.username === username) {
+                            user= JSON.parse(JSON.stringify(u));
+                            return true;
+                        }
+                    });
+                    if(hasUser) {
+                        resolve([200, { code:500, msg: '此用户名已经存在' }]);
+                    } else {
+                        let newUser = {
+                            id: 1,
+                            username: username,
+                            password: password,
+                            name: 'X某某',
+                            avatar_url:Mock.Random.image('120x120','','#FFF','X某某'),
+                            token:Mock.Random.guid()
+                        };
+                        LoginUsers.push(newUser);
+                        resolve([200, { code: 200, msg: '注册成功',newUser }]);
                     }
                 },1000);
             });

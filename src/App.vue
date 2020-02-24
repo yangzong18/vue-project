@@ -12,7 +12,6 @@
       ></fixed-bg>
     </div>
     <v-content></v-content>
-    <updatetips :defaultvalue="getVersionList"></updatetips>
     <audio :src="getCurrentMusic.url" ref="myAudio"></audio>
   </div>
 </template>
@@ -135,7 +134,6 @@ export default {
       return store.getters.getGlobalInfo;
     },
     imageInfo() {
-      console.log(store.getters.getFixedImageInfo);
       return store.getters.getFixedImageInfo;
     },
     imageSetting() {

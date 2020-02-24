@@ -13,7 +13,7 @@ const globalStore = {
 		place: {},
 		weather: {},
 		showloading: true,
-		musicRouter: '/music/sheet/124995419',
+		musicRouter: '/music/sheet/1398663411',
 		host: process.env.HOST || 'https://www.daiwei.site',
 		userInfo: null
 	},

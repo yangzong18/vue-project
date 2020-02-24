@@ -10,15 +10,18 @@ import 'element-ui/lib/theme-chalk/index.css'
 import Msg from 'vue-message'
 import Mock from './mock'
 if (process.env.NODE_ENV === 'development') {
-  Mock.start();
+  // Mock.start();
 }
+
 Vue.use(Msg, {text: 'Hello world', duration: 3000, background: 'rgba(7,17,27,0.6)'})
 Vue.use(ElementUI)
 /* eslint-disable no-new */
-new Vue({
+const vueExp = new Vue({
   el: '#app',
   store,
   router,
   template: '<App/>',
   render: h => h(App)
 })
+
+export default vueExp

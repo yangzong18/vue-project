@@ -89,6 +89,7 @@ export default {
     isBingImage() {
       return store.getters.getGlobalInfo.showBingImage;
     }
+    
   },
   methods: {
     playpause(){
@@ -219,6 +220,9 @@ export default {
 };
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
+/** this is home css */
+@import '~common/stylus/border-1px/index.styl'
+@import '~common/stylus/global.styl';
 .home {
   position: fixed;
   top: 0;

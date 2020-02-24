@@ -9,6 +9,7 @@ import MusicSheet from '@/components/music/sheet/sheet.vue'
 import MusicSearch from '@/components/music/search/search.vue'
 import MusicSearchList from '@/components/music/search/searchList.vue'
 import MusicAlbumList from '@/components/music/albumlist/albumlist.vue'
+import MusicPlayList from '@/components/music/playlist/playlist.vue'
 import DGlobal from '@/common/js/global.js'
 import store from '@/store'
 import Login from '@/components/user/login/login.vue'
@@ -40,10 +41,12 @@ const myRouter = new Router({
       // 音乐
       path: '/music',
       component: Music,
+      meta:{
+        auth:true
+      },
       children: [
         {
           path: '/',
-          redirect: store.getters.getMusicRouter,
           meta: {
             auth: true
           },
@@ -68,6 +71,32 @@ const myRouter = new Router({
           name: 'albumlist',
           components: {
             listinfo: MusicAlbumList
+          }
+        },
+        {
+          path: '/music/sheet/:id',
+          name: 'musicindex',
+          meta: {
+            auth: true
+          },
+          component: MusicSheet
+        },
+        {
+          path: '/music/sheet/',
+          meta: {
+            auth: true
+          },
+          components: {
+            listinfo: MusicSheet
+          }
+        },
+        {
+          path: '/music/playlist/',
+          meta: {
+            auth: true
+          },
+          components: {
+            listinfo: MusicPlayList
           }
         },
       ]

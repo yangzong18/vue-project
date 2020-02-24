@@ -72,11 +72,7 @@ const musicApi = {
     // 获取专辑信息
     getAlbum (id) {
         const apiUrl = `http://api.netease.com/album?id=${id}`
-        fecth.get(apiUrl, {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        }).then((res) => {
+        fecth.get(apiUrl).then((res) => {
             // that.musicInfo = res.data.playlist.tracks
             store.dispatch({
                 type: 'set_MusicSheetList',
@@ -245,12 +241,8 @@ const musicApi = {
 
     // 搜索音乐
     searchMusic (word, pages, that) {
-        const apiUrl = `https://www.daiwei.site/php/web_v2_api/music.php?inAjax=1&do=search&count=30&pages=${pages}&name=${word}`
-        fecth.get(apiUrl, {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        }).then((res) => {
+        const apiUrl = `http://api.netease.com/search?keywords=${word}`
+        fecth.get(apiUrl).then((res) => {
             try {
                 res.data.result.songs.forEach((value, index, array) => {
                     that.searchMusicList.push(value)

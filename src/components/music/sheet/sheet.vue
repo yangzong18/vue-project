@@ -16,11 +16,10 @@
   import store from '@/store'
   import musicApi from '@/components/music/music.js'
   import musiclist from '@/components/common/musiclist/musiclist.vue'
-  console.log('music/sheet.vue')
   export default {
   	data () {
   		return {
-  			// musicInfo: {},
+			  // musicInfo: {},
   			currentMusic: {},
   			params: this.$route.params,
   			currentMusicLrcIndex: 0
@@ -30,7 +29,10 @@
   		lrccontent: {}
   	},
   	methods: {
-  		
+  		// 初始化音乐播放器
+		initMusic () {
+			musicApi.getMusicList()
+  		}
   	},
   	computed: {
   		musicList () {
@@ -47,8 +49,11 @@
   	},
   	mounted () {
   		this.$nextTick(() => {
-			musicApi.getMusicList()
+			// alert(JSON.stringify(this.params))
+			this.initMusic()
+			// musicApi.musicEvent(this)
 		})
+	
   	}
   }
 </script>

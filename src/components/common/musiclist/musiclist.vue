@@ -22,7 +22,7 @@
 					</span>
 					<span class="music_duration">{{getMusicDurationType(list.duration)}}</span>
 				</div>
-				<div class="music_list border-1px" @mouseenter="showIcon" @mouseleave="hideIcon" v-if="musiclist && musiclist[0].al"v-for="(list, index) in musiclist" :key="list.id" :data-musicid="list.id" :data-pic="list.al.picUrl" @click="clickPlayList(list.id, list.name, list.album.picUrl, list.artists[0].name, getMusicDurationType(list.duration),index), musiclist">
+				<div class="music_list border-1px" @mouseenter="showIcon" @mouseleave="hideIcon" v-if="musiclist && musiclist[0].al"v-for="(list, index) in musiclist" :key="list.id" :data-musicid="list.id" :data-pic="list.album.picUrl" @click="clickPlayList(list.id, list.name, list.album.picUrl, list.artists[0].name, getMusicDurationType(list.duration),index), musiclist">
 					<span class="music_index">
 						<span v-show="getCurrentMusic.id !== list.id">{{index + 1}}</span>
 					</span>
@@ -33,8 +33,8 @@
 							<i class="icon-add" v-if="!showdelicon" @click.stop="collectMusic(index)"></i>
 						</div>
 					</div>
-					<span class="music_singer" v-if="list.ar">
-						<span @click.stop="searchMusic($event)">{{list.ar[0].name}}</span>
+					<span class="music_singer" v-if="list.artists">
+						<span @click.stop="searchMusic($event)">{{list.artists[0].name}}</span>
 					</span>
 					<span class="music_zhuanji" v-if="list.album.name">
 						<span @click.stop="getAlbum(list.album.id)">{{list.album.name}}</span>
@@ -159,7 +159,7 @@ export default {
 		}
 	},
 	mounted(){
-
+		
 	},
 	watch: {
 		'$route' (to, from) {

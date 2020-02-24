@@ -10,11 +10,17 @@ import MusicSearch from '@/components/music/search/search.vue'
 import MusicSearchList from '@/components/music/search/searchList.vue'
 import MusicAlbumList from '@/components/music/albumlist/albumlist.vue'
 import MusicPlayList from '@/components/music/playlist/playlist.vue'
+import MusicToplist from '@/components/music/toplist/toplist.vue'
+
 import DGlobal from '@/common/js/global.js'
 import store from '@/store'
 import Login from '@/components/user/login/login.vue'
 import User from '@/components/user/user.vue'
 import UserInfo from '@/components/user/info/info.vue'
+const routerPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return routerPush.call(this, location).catch(error=> error)
+}
 Vue.use(Router)
 const myRouter = new Router({
   mode:'history',
@@ -64,6 +70,16 @@ const myRouter = new Router({
           }
         },
         {
+          path: '/music/searchlist/:w',
+          name: 'searchlist',
+          meta: {
+            auth: true
+          },
+          components: {
+            listinfo: MusicSearchList
+          }
+        },
+        {
           path: '/music/albumlist/:id',
           meta: {
             auth: true
@@ -79,7 +95,9 @@ const myRouter = new Router({
           meta: {
             auth: true
           },
-          component: MusicSheet
+          components: {
+            listinfo: MusicSheet
+          }
         },
         {
           path: '/music/sheet/',
@@ -97,6 +115,15 @@ const myRouter = new Router({
           },
           components: {
             listinfo: MusicPlayList
+          }
+        },
+        {
+          path: '/music/toplist/',
+          meta: {
+            auth: true
+          },
+          components: {
+            listinfo: MusicToplist
           }
         },
       ]

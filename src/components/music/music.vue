@@ -9,13 +9,13 @@
   			<div class="left_list">
   				<div class="music_home">
   					<div v-if="getIsAPP.isHigher768" class="select_button">
-  						<router-link tag="span" to="/music/playlist" class="todo_btn playing_btn">
+  						<!-- <router-link tag="span" to="/music/playlist" class="todo_btn playing_btn">
 				        	正在播放
 				        </router-link>
 			  			<router-link tag="span" to="/music/collection" class="todo_btn collect_btn">
 				        	我的收藏
-				      </router-link>
-				      <router-link tag="span" to="/music/toplist" class="todo_btn top_btn">
+				      </router-link> -->
+				      <router-link tag="span" to="/music" class="todo_btn top_btn">
 				        	排行榜/歌单
 				      </router-link>
 			  			<router-link tag="span" to="/music/search" class="todo_btn search_btn">
@@ -88,7 +88,6 @@
 import store from '@/store'
 import musicApi from '@/components/music/music.js'
 import { todoUserInfo } from '@/common/api/user.js'
-  console.log('music.vue')
   export default {
   	data () {
   		return {
@@ -118,7 +117,7 @@ import { todoUserInfo } from '@/common/api/user.js'
   		},
   		// 初始化音乐播放器
 		initMusic () {
-			musicApi.getMusicSheet(124995419, this)
+			// musicApi.getMusicSheet(124995419, this)
   		},
   		AudiEle () {
   			return store.getters.getAudioEle
@@ -172,7 +171,6 @@ import { todoUserInfo } from '@/common/api/user.js'
   		selectAudioType (isclick) {
 			let atype = localStorage.getItem('audioPlayType') || store.getters.getAudioPlayType || 1
 			const audioEle = this.AudiEle()
-			console.log(audioEle)
   			// 判断是点击的还是 init的
   			if (isclick) {
   				atype = atype++ >= 3 ? 1 : atype
@@ -233,9 +231,6 @@ import { todoUserInfo } from '@/common/api/user.js'
   		}
   	},
   	watch: {
-  		// currentMusic (newval, oldval) {
-  		// 	alert(newval.lyric)
-  		// },
   		'$route' (to, from) {
 			store.dispatch({
 				type: 'set_MusicRouter',

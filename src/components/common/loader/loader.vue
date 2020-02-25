@@ -1,5 +1,9 @@
 <template>
-  <div class="loader" v-show="isshow" :style="{backgroundColor:loaderbackgroud}"></div>
+  <div class="loader" v-show="isshow" :style="{backgroundColor:loaderbackgroud}">
+    <div class="loader-content" :style="{backgroundColor:loaderwidth}">
+        <div class="loader-range" :style="{borderYopColor:topbottomcolor,borderBottomColor:topbottomcolor,borderRightColor:leftrightcolor,borderLeftColor:leftrightcolor,opacity:borderopacity,animationDuration:borderduration}"></div>
+    </div>
+  </div>
 </template>
 <script>
 import '@/common/response.css'

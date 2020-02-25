@@ -12,6 +12,8 @@ import MusicAlbumList from '@/components/music/albumlist/albumlist.vue'
 import MusicPlayList from '@/components/music/playlist/playlist.vue'
 import MusicToplist from '@/components/music/toplist/toplist.vue'
 
+import About from '@/components/about/about.vue'
+import Setting from '@/components/setting/setting.vue'
 import DGlobal from '@/common/js/global.js'
 import store from '@/store'
 import Login from '@/components/user/login/login.vue'
@@ -127,6 +129,16 @@ const myRouter = new Router({
           }
         },
       ]
+    },
+    {
+      // 关于
+      path: '/about',
+      component: About,
+    },
+    {
+      // 关于
+      path: '/setting',
+      component: Setting,
     },
     {
       path: '/user/login',

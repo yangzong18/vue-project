@@ -1,13 +1,6 @@
 <template>
   <div class="music_sheet">
   	<div class="list_content_info">
-		<div class="music_list_title border-1px">
-			<span class="music_index"></span>
-			<span class="music_name">歌曲</span>
-			<span class="music_singer">歌手</span>
-			<span class="music_zhuanji">专辑</span>
-			<span class="music_duration">时长</span>
-		</div>
 		<musiclist v-if="musicList" :musiclist = "musicList"></musiclist>
 	</div>
   </div>

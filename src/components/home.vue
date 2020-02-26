@@ -43,14 +43,6 @@
         </div>
       </div>
       <span class="tips" :title="bingImageDisc">每日一图由 {{bingImageDisc}} 提供 | Copyright © 2016~{{new Date().getFullYear()}} WALKER.SITE
-        <span v-if="globalInfo.isHigher768">
-            <router-link tag="a" to="/about/suggest" title="请提出你的意见">
-              <span>意见建议</span>
-            </router-link>
-            <router-link tag="a" to="/about/friendship" title="希望能互换友链">
-              <span>友情链接</span>
-            </router-link>
-          </span>
       </span>
     </div>
     <audio v-if="imageInfo.musicUrl" ref="homeAudio" style="display:none" loop="" :src="imageInfo.musicUrl"></audio>

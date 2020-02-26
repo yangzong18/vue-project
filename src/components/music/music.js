@@ -140,6 +140,7 @@ const musicApi = {
             })
             that.$nextTick(() => {
                 try {
+                    store.getters.getAudioEle.load()
                     store.getters.getAudioEle.play()
                 } catch (e) {
                     return
@@ -150,7 +151,6 @@ const musicApi = {
                     data: 0
                 })
                 this.initAudioEvent(this);
-                this.scrollAnimate(document.getElementsByClassName('lrc-wrapper')[0], 0)
                 // 设置播放状态
                 store.commit('setAudioIsPlay',true)
             })
@@ -193,14 +193,8 @@ const musicApi = {
         // 再次添加 放入vuex
         store.commit({
             type: 'setAudiolrcIndex',
-            data: i
+            data: this.lyric[time]
         })
-
-        try {
-            this.scrollAnimate(that.$refs.lrcWrapper, i * document.getElementsByClassName('lrc-item')[0].offsetHeight)
-        } catch (e) {
-            return
-        }
     },
 
     // 点击播放歌曲
@@ -208,7 +202,6 @@ const musicApi = {
         var reqId = data.music_id ? data.music_id : data.id
         const apiUrl = `http://api.netease.com/music/url?ids=${reqId}`
         fecth.get(apiUrl).then((res) => {
-            console.log(res.data.data[0].url)
             // 如果代码不允许被播放（付费音乐）
             if (res.data.data[0].url === null) {
                 that.$msg('音乐无法播放,请播放其他音频...')
@@ -267,83 +260,6 @@ const musicApi = {
         ele.style.WebkitTransform = `translate3d(-50%, -${position}px, 0)`
         ele.style.transform = `transform: translate3d(-50%, -${position}px, 0)`
     },
-
-    // 添加到我喜欢的音乐 使用本地存储的方法
-    collectMusic (opt) {
-        todoUserInfo().then((res) => {
-            console.log(opt)
-            let options = {
-                userid: res.id,
-                music_id: opt.id,
-                music_name: opt.name,
-                singer_id: opt.ar[0].id,
-                singer_name: opt.ar[0].name,
-                album_id: opt.al.id,
-                album_name: opt.al.name,
-                music_dur: opt.dt,
-                music_picurl: opt.al.picUrl
-            }
-            let fecthUrl = 'https://www.daiwei.site/php/web_v2_api/user.php?inAjax=1&do=collectMusic'
-            fecthPromise(fecthUrl, options).then((res) => {
-                this.$msg(res.data.msg)
-            }, (err) => {
-                this.$msg(err)
-            })
-        }, (err) => {
-            this.$msg(err.msg)
-            this.$router.push({ path: '/user/login' })
-        })
-    },
-
-    // 获取本地的音乐
-    getLocalMusic () {
-        todoUserInfo().then((res) => {
-            let fecthUrl = 'https://www.daiwei.site/php/web_v2_api/user.php?inAjax=1&do=getCollectMusic'
-            fecthPromise(fecthUrl, {
-                userid: res.id
-            }).then((res) => {
-                store.commit({
-                    type: 'setMusicCollectList',
-                    data: res.data
-                })
-            }, (err) => {
-                this.$msg(err)
-            })
-        }, (err) => {
-            this.$msg(err.msg)
-            this.$router.push({ path: '/user/login' })
-        })
-    },
-
-    // 删除收藏的音乐
-    deleteMusic (id) {
-        todoUserInfo().then((res) => {
-            let fecthUrl = 'https://www.daiwei.site/php/web_v2_api/user.php?inAjax=1&do=delCollectMusic'
-            fecthPromise(fecthUrl, {
-                userid: res.id,
-                music_id: id
-            }).then((res) => {
-                let collectlist = store.getters.getMusicCollectList
-                collectlist.forEach((v, i, a) => {
-                    if (id === v.music_id) {
-                        collectlist.splice(i, 1)
-                        return
-                    }
-                })
-                store.commit({
-                    type: 'setMusicCollectList',
-                    data: collectlist
-                })
-                this.$msg(res.data.msg)
-            }, (err) => {
-                this.$msg(err)
-            })
-        }, (err) => {
-            this.$msg(err.msg)
-            this.$router.push({ path: '/user/login' })
-        })
-    },
-
     // 播放暂停
     playPause () {
         try {
@@ -423,16 +339,11 @@ const musicApi = {
         // const _this = this
         // audio Dom元素
         const ele = store.getters.getAudioEle
-        // const _this = this
-        // 本地音乐初始化  （收藏的歌曲）
-        // this.getLocalMusic.call(that)
-
-        ele.onloadedmetadata = () => {
+        if(ele === ''){
+            return
         }
-
         // 音乐播放结束事件
         ele.onended = () => {
-            this.insetMusicListen()
             // 判断用户有没有登陆  登陆了存储用户播放音乐数据
             this.playNextPrev(that, true)
         }
@@ -563,33 +474,7 @@ const musicApi = {
         return url.indexOf('//m7c') < 0 ? (url.indexOf('//m8c') ? url.replace('//m8c', '//m8') : url) : url.replace('//m7c', '//m7')
     },
 
-    insetMusicListen () {
-        todoUserInfo().then((res) => {
-            let index = store.getters.getCurrentAudio.index
-            let musicplaylist = store.getters.getMusicPlayList
-            let options = {
-                userid: res.id,
-                username: res.username,
-                music_id: musicplaylist[index].music_id || musicplaylist[index].id,
-                music_name: musicplaylist[index].music_name || musicplaylist[index].name,
-                singer_id: musicplaylist[index].singer_id || musicplaylist[index].ar[0].id,
-                singer_name: musicplaylist[index].singer_name || musicplaylist[index].ar[0].name,
-                album_id: musicplaylist[index].album_id || musicplaylist[index].al.id,
-                album_name: musicplaylist[index].album_name || musicplaylist[index].al.name,
-                music_dur: musicplaylist[index].music_dur || musicplaylist[index].dt,
-                music_picurl: musicplaylist[index].music_picurl || musicplaylist[index].al.picUrl,
-                listen_time: Utils.formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
-            }
-            let fecthUrl = 'https://www.daiwei.site/php/web_v2_api/user.php?inAjax=1&do=userMusicListen'
-            fecthPromise(fecthUrl, options).then((res) => {
-                console.log(options.music_name + '播放完成')
-            }, (err) => {
-                vueExp.$msg(err)
-            })
-        }, (err) => {
-            vueExp.$msg(err.msg)
-        })
-    },
+
 
     setPlayType (type) {
         this.typeType = Number.parseInt(type)

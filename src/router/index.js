@@ -9,8 +9,6 @@ import MusicSheet from '@/components/music/sheet/sheet.vue'
 import MusicSearch from '@/components/music/search/search.vue'
 import MusicSearchList from '@/components/music/search/searchList.vue'
 import MusicAlbumList from '@/components/music/albumlist/albumlist.vue'
-import MusicPlayList from '@/components/music/playlist/playlist.vue'
-import MusicToplist from '@/components/music/toplist/toplist.vue'
 
 import About from '@/components/about/about.vue'
 import Setting from '@/components/setting/setting.vue'
@@ -54,7 +52,7 @@ const myRouter = new Router({
       },
       children: [
         {
-          path: '/',
+          path: '/music/rank',
           meta: {
             auth: true
           },
@@ -72,7 +70,7 @@ const myRouter = new Router({
           }
         },
         {
-          path: '/music/searchlist/:w',
+          path: '/music/search/:w',
           name: 'searchlist',
           meta: {
             auth: true
@@ -108,24 +106,6 @@ const myRouter = new Router({
           },
           components: {
             listinfo: MusicSheet
-          }
-        },
-        {
-          path: '/music/playlist/',
-          meta: {
-            auth: true
-          },
-          components: {
-            listinfo: MusicPlayList
-          }
-        },
-        {
-          path: '/music/toplist/',
-          meta: {
-            auth: true
-          },
-          components: {
-            listinfo: MusicToplist
           }
         },
       ]

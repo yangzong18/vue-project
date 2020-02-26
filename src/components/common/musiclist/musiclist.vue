@@ -3,7 +3,7 @@
 		<scroll :data ="musiclist" class="music_l_content" :needPullUp="isNeedPull" @pullingUp="pullingUp">
 			<div class="content">
 				<span class="list_empty" v-if="!musiclist.length">暂无音乐列表哦 !</span>
-				<div class="music_list border-1px" @mouseenter="showIcon" @mouseleave="hideIcon" v-if="musiclist" v-for="(list, index) in musiclist" :key="list.id" :data-musicid="list.id" :data-pic="list.artists[0].picUrl" @click="clickPlayList(list.id, list.name, list.artists[0].picUrl, list.artists[0].name, getMusicDurationType(list.duration),index), musiclist">
+				<div class="music_list border-1px" v-if="musiclist" v-for="(list, index) in musiclist" :key="list.id" :data-musicid="list.id" :data-pic="list.album.picUrl" @click="clickPlayList(list.id, list.name, list.album.picUrl, list.artists[0].name, getMusicDurationType(list.duration),index), musiclist">
 					<span class="music_index">
 						<span v-show="false"></span>
 					</span>
@@ -22,7 +22,7 @@
 					</span>
 					<span class="music_duration">{{getMusicDurationType(list.duration)}}</span>
 				</div>
-				<div class="music_list border-1px" @mouseenter="showIcon" @mouseleave="hideIcon" v-if="musiclist && musiclist[0].al"v-for="(list, index) in musiclist" :key="list.id" :data-musicid="list.id" :data-pic="list.album.picUrl" @click="clickPlayList(list.id, list.name, list.album.picUrl, list.artists[0].name, getMusicDurationType(list.duration),index), musiclist">
+				<div class="music_list border-1px" v-if="musiclist && musiclist[0].al"v-for="(list, index) in musiclist" :key="list.id" :data-musicid="list.id" :data-pic="list.album.picUrl" @click="clickPlayList(list.id, list.name, list.album.picUrl, list.artists[0].name, getMusicDurationType(list.duration),index), musiclist">
 					<span class="music_index">
 						<span v-show="getCurrentMusic.id !== list.id">{{index + 1}}</span>
 					</span>
@@ -123,11 +123,6 @@ export default {
 		initMusic () {
 			this.$emit('init')
 		},
-		// list.id, list.al.picUrl, list.ar[0].name, list.al.id, list.al.name, getMusicDurationType(list.dt)
-		collectMusic (index) {
-			const musiccollect = store.getters.getMusicList[index]
-			musicApi.collectMusic.call(this, musiccollect)
-		}
 	},
 
 	components: {

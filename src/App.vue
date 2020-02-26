@@ -12,19 +12,25 @@
       ></fixed-bg>
     </div>
     <v-content></v-content>
-    <audio :src="getCurrentMusic.url" ref="myAudio"></audio>
+    <div class="dw-react-web-lyric-comp" v-if="getMusicLrc">
+      <ul class="dw-react-web-lyric-comp-content">
+        <li class="dw-react-web-lyric-comp-content-list" v-text="getMusicLrc"></li>
+      </ul>
+      <span class="dw-react-web-lyric-comp-close" @click="shutDownLyr">关闭</span>
+    </div>
   </div>
 </template>
 <script>
 import fixedbg from "@/components/common/fixedbg/fixedbg.vue";
 import loader from "@/components/common/loader/loader.vue";
-import content from '@/components/common/content/content.vue'
-import updatetips from '@/components/common/updatetips/updatetips.vue'
+import content from "@/components/common/content/content.vue";
+import updatetips from "@/components/common/updatetips/updatetips.vue";
 import store from "@/store";
 import DGlobal from "@/common/js/global.js";
-import API from '@/config/api'
+import API from "@/config/api";
 // 引入背景请求的api
 import { getBingInfo, getMineBgByIndex } from "@/common/api/background.js";
+import { addClass, removeClass } from "@/common/js/Dom.js";
 export default {
   name: "app",
   data() {
@@ -33,11 +39,10 @@ export default {
     };
   },
   components: {
-    "v-content":content,
+    "v-content": content,
     "fixed-bg": fixedbg,
     loader,
     updatetips
-
   },
   mounted() {
     // 输出信息
@@ -50,9 +55,15 @@ export default {
     window.onresize = () => {
       this.isApp();
     };
-    localStorage.setItem("globalInfo",JSON.stringify(store.getters.getGlobalInfo));
+    localStorage.setItem(
+      "globalInfo",
+      JSON.stringify(store.getters.getGlobalInfo)
+    );
   },
   methods: {
+    shutDownLyr(e){
+      addClass(e.currentTarget.parentElement,'hide')
+    },
     isApp() {
       let isTrue = false;
       if (document.body.clientWidth < 768) {
@@ -126,12 +137,14 @@ export default {
           }
         }
       }
-    },
-    
+    }
   },
   computed: {
     getGlobalStyle() {
       return store.getters.getGlobalInfo;
+    },
+    getMusicLrc(){
+      return store.getters.getAudiolrcIndex;
     },
     imageInfo() {
       return store.getters.getFixedImageInfo;
@@ -158,23 +171,72 @@ export default {
 };
 </script>
 <style lang="stylus">
-/**** this is App css ***/
-@import '~common/stylus/border-1px/index.styl'
+/* *** this is App css ** */
+@import '~common/stylus/border-1px/index.styl';
 @import '~common/stylus/global.styl';
-  audio
-    display:none
-  body,html
-    margin:0
-    padding:0
-    box-sizing:border-box
-    background:#f0f0f0f0
-    user-select:none
-    -webkit-tap-highlight-color: transparent
-  #app 
-    position: fixed
-    top: 0
-    left: 0
-    bottom: 0
-    right:0
-    background:transparent
+
+.dw-react-web-lyric-comp {
+    position: fixed;
+    bottom: 20px;
+    height: 50px;
+    z-index: 119;
+    width: 400px;
+    left: 50%;
+    right: 50%;
+    transform: translate3d(-50%,0,0);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    opacity: 0.6;
+    visibility: visible;
+    transition: opacity .3s;
+    background-color:#fff;
+    &.hide{
+      display:none;
+    }
+    .dw-react-web-lyric-comp-close {
+      flex: 0 0 75px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all .3s;
+      font-size: 12px;
+    }
+    .dw-react-web-lyric-comp-content {
+      flex: 1 1 auto;
+      overflow: hidden;
+      padding: 0 10px 0 40px;
+      .dw-react-web-lyric-comp-content-list {
+        text-overflow: ellipsis;
+        // white-space: nowrap;
+        overflow: hidden;
+        color: var(--text-color);
+    }
+  }
+}
+
+audio {
+  display: none;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: #f0f0f0f0;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#app {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: transparent;
+}
 </style>

@@ -15,11 +15,11 @@
         <router-link tag="a" to="/home">
           <li>首页</li>
         </router-link>
-        <router-link tag="a" to="/blog">
-          <li>博客</li>
+        <router-link tag="a" to="/music/rank">
+          <li>排行榜</li>
         </router-link>
-        <router-link tag="a" to="/music">
-          <li>音乐</li>
+        <router-link tag="a" to="/music/search">
+          <li>搜索</li>
         </router-link>
         <router-link tag="a" to="/about">
           <li>关于</li>
@@ -27,38 +27,31 @@
         <a href="https://ifmiss.github.io/d-utils/" target="_black">
           <li>通用js</li>
         </a>
-        <router-link tag="a" to="/reward">
-          <li>
-            <span class="icon-reward" style="font-size: 16px;vertical-align:middle"></span>
-            打赏
-          </li>
-        </router-link>
       </div>
       <!-- 移动端菜单按钮 -->
       <transition name="fade">
-        <div class="fixed-fade-menu" v-show="showLeftMenu" :class="{ios: isIos}" @click="hideLeftContent">
+        <div
+          class="fixed-fade-menu"
+          v-show="showLeftMenu"
+          :class="{ios: isIos}"
+          @click="hideLeftContent"
+        >
           <div class="fixed-menu-content" @click="hideLeftContent">
-          <router-link tag="a" to="/home">
-            <li>首页</li>
-          </router-link>
-          <router-link tag="a" to="/blog">
-            <li>博客</li>
-          </router-link>
-          <router-link tag="a" to="/music">
-            <li>音乐</li>
-          </router-link>
-          <router-link tag="a" to="/about">
-            <li>关于</li>
-          </router-link>
-          <a href="https://ifmiss.github.io/d-utils/" target="_black">
-            <li>通用js</li>
-          </a>
-          <router-link tag="a" to="/reward">
-            <li>
-              <span class="icon-reward" style="font-size: 16px;vertical-align:middle"></span>
-              打赏
-            </li>
-          </router-link>
+            <router-link tag="a" to="/home">
+              <li>首页</li>
+            </router-link>
+            <router-link tag="a" to="/music/rank">
+              <li>排行榜</li>
+            </router-link>
+            <router-link tag="a" to="/music/search">
+              <li>搜索</li>
+            </router-link>
+            <router-link tag="a" to="/about">
+              <li>关于</li>
+            </router-link>
+            <a href="https://ifmiss.github.io/d-utils/" target="_black">
+              <li>通用js</li>
+            </a>
           </div>
         </div>
       </transition>
@@ -67,22 +60,27 @@
       </div>
       <!-- pc 移动端设置按钮 -->
       <div class="right-menu">
-        <router-link v-if="getUserInfo !== null" class="listmenu" tag="a" to="/user/info">
-          {{getUserInfo.nickname === '' ? (getUserInfo.username === '' ? '点击设置用户名' : getUserInfo.username) : getUserInfo.nickname}}
-        </router-link>
-        <router-link v-else class="listmenu" tag="a" to="/user/login">
-          登陆
-        </router-link>
+        <router-link
+          v-if="getUserInfo !== null"
+          class="listmenu"
+          tag="a"
+          to="/user/info"
+        >{{getUserInfo.nickname === '' ? (getUserInfo.username === '' ? '点击设置用户名' : getUserInfo.username) : getUserInfo.nickname}}</router-link>
+        <router-link v-else class="listmenu" tag="a" to="/user/login">登陆</router-link>
         <a href="https://github.com/yangzong18/vue-project/tree/vue-website" target="_black">
-          <li class="li-icon" title="github"><i class="icon-github"></i></li>
+          <li class="li-icon" title="github">
+            <i class="icon-github"></i>
+          </li>
         </a>
         <router-link tag="a" to="/setting" class="a-icon">
-          <li class="li-icon" title="设置" @click="hideLeftContent"><i class="icon-setting"></i></li>
+          <li class="li-icon" title="设置" @click="hideLeftContent">
+            <i class="icon-setting"></i>
+          </li>
         </router-link>
       </div>
     </ul>
     <transition name="fade">
-        <router-view class="li_list"></router-view>
+      <router-view class="li_list"></router-view>
     </transition>
   </section>
 </template>
@@ -99,27 +97,28 @@ export default {
     getGlobalInfo() {
       return store.getters.getGlobalInfo;
     },
-    getUserInfo () {
-      return store.getters.getUserInfo
+    getUserInfo() {
+      return store.getters.getUserInfo;
     }
   },
-  methods:{
-    toggleMenuContent(){
+  methods: {
+    toggleMenuContent() {
       this.showLeftMenu = !this.showLeftMenu;
     },
-    hideLeftContent () {
-      this.showLeftMenu = false
+    hideLeftContent() {
+      this.showLeftMenu = false;
     },
-    isIos () {
-      return /iPhone|iPod/i.test(navigator.userAgent)
-    },
+    isIos() {
+      return /iPhone|iPod/i.test(navigator.userAgent);
+    }
   }
 };
 </script>
 <style lang="stylus">
-/**** this is content css ***/
-@import '~common/stylus/border-1px/index.styl'
+/* *** this is content css ** */
+@import '~common/stylus/border-1px/index.styl';
 @import '~common/stylus/global.styl';
+
 .div_content {
   position: fixed;
   top: 0;

@@ -11,6 +11,20 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+      '/api': { // api只是一个代号，可以随便取，但是要跟下面的那个api保持一致
+        target: 'https://c.y.qq.com', // 需要请求的链接地址
+        changeOrigin: true,  // 跨域必开
+        pathRewrite: {
+          '^/api': ''
+        }
+      },
+      '/darlin': { // 获取歌词
+        target: 'https://api.darlin.me/', // 需要请求的链接地址
+        changeOrigin: true,  // 跨域必开
+        pathRewrite: {
+          '^/darlin': ''
+        }
+      },
     },
 
     // Various Dev Server settings

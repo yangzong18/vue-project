@@ -6,10 +6,7 @@ import DGlobal from '@/common/js/global.js'
 // request拦截器
 axios.interceptors.request.use(
   config => {
-   store.dispatch({
-    type: 'set_ShowLoading',
-    data: true
-  })
+   
 
   return config
 }, error => {
@@ -32,10 +29,6 @@ function checkStatus (response) {
     return response
     // 如果不需要除了data之外的数据，可以直接 return response.data
   }
-   store.dispatch({
-    type: 'set_ShowLoading',
-    data: false
-  })
 
   if (!store.getters.userInfo) {
     const userInfo = DGlobal.storage.getCookie('c_user_info')
@@ -60,11 +53,6 @@ function checkCode (res) {
   if (res.data && (!res.data.success)) {
     // alert(res.data.error_msg)
   }
-  // console.log('loadding')
-   store.dispatch({
-    type: 'set_ShowLoading',
-    data: false
-  })
   return res
 }
 
@@ -129,5 +117,5 @@ export default {
         return checkCode(res)
       }
     )
-  }
+  },
 }

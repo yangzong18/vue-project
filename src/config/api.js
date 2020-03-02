@@ -1,82 +1,186 @@
-const HOST = process.env.HOST || 'https://www.daiwei.site'
-const base = 'http://api.netease.com'
-const api = {
-  // 设置的请求host地址
-  HOST,
-
-  // 获取位置
-  GET_ADRESS: `${HOST}/php/web_v2_api/home.php?inAjax=1&do=getAdress`,
-
-  // 获取天气信息
-  GET_WEATHER: `${HOST}/php/web_v2_api/home.php?inAjax=1&do=getWeather`,
-
-  // 获取bing壁纸
-  GET_BING_IMAGE: `${HOST}/php/web_v2_api/home.php?inAjax=1&do=getImageByBingJson`,
-
-  // 获取个人首页图片集合
-  GET_MINE_IMAGE: `${HOST}/php/web_v2_api/home.php?inAjax=1&do=getHomeImage`,
-
-  // 获取个人所有的图片信息
-  GET_ALL_MINE_IMAGE: `${HOST}/php/web_v2_api/home.php?inAjax=1&do=getAllImage`,
-
-  // 获取友情链接地址
-  GET_LINKS: `${HOST}/php/web_v2_api/home.php?inAjax=1&do=getLinksInfo`,
-
-  // 获取笑话数据
-  GET_JOKE: `${HOST}/php/web_v2_api/home.php?inAjax=1&do=getJokeInfo`,
-
-  // 获取个人的标签
-  GET_TIPS_INFO: `${HOST}/php/web_v2_api/home.php?inAjax=1&do=getTipsInfo`,
-
-  // 更新个人标签
-  UPDATE_TIPS_INFO: `${HOST}/php/web_v2_api/home.php?inAjax=1&do=updataTipsInfo`,
-
-  // 获取新闻信息
-  GET_NEWS_INFO: `${HOST}/php/web_v2_api/home.php?inAjax=1&do=getNewsInfo`,
-
-  // 获取资源信息中音频地址
-  GET_RESOURCE_AUDIO: `${HOST}/php/web_v2_api/home.php?inAjax=1&do=getResourceAudio`,
-
-  // 获取资源信息中视频地址
-  GET_RESOURCE_VIDEO: `${HOST}/php/web_v2_api/home.php?inAjax=1&do=getResourceVideo`,
-
-  // 获取建议和意见的内容
-  GET_SUGGEST_INFO: `${HOST}/php/web_v2_api/home.php?inAjax=1&do=getSuggestInfo`,
-
-  // 提交建议和意见
-  SUB_SUGGEST_INFO: `${HOST}/php/web_v2_api/home.php?inAjax=1&do=submitSuggestInfo`,
-
-  // 获取网址更新内容
-  GET_WEB_UPDATE_INFO: `${HOST}/php/web_v2_api/home.php?inAjax=1&do=getUpdateInfo`,
-
-  // 获取作品列表
-  GET_WORKS_LIST: `${HOST}/php/web_v2_api/home.php?inAjax=1&do=getWorksList`,
-
-  // 判断是否要更新 在弹窗提示的时候使用
-  IS_NEED_UPDATE: `${HOST}/php/web_v2_api/home.php?inAjax=1&do=isNeedUpdate`,
-
-  // 更新注册信息
-  UPDATE_SINGIN_INFO: `${HOST}/php/web_v2_api/user.php?inAjax=1&do=updateSigninInfo`,
-
-  // 文件上传
-  UPLOAD: `${HOST}/php/web_v2_api/upload.php`,
-
-  // 更新用户信息
-  UPDATE_USER_INFO: `${HOST}/php/web_v2_api/user.php?inAjax=1&do=updateUserInfo`,
-
-  // 获取pic路由下图片的数据
-  GET_PIC_IMAGE: `${HOST}/php/web_v2_api/home.php?inAjax=1&do=getImageCondition`,
-
-  // 获取赞赏的人的信息
-  GET_REWARD_LIST: `${HOST}/php/web_v2_api/home.php?inAjax=1&do=getRewardList`,
-
-  // 个人中心数据获取
-  GET_PERSONAL_INFO: `${HOST}/php/web_v2_api/user.php?inAjax=1&do=personalCenter`,
-
-  // 登陆
-  LOGIN: `${base}/login/cellphone`,
-
-  // 注册
-  SINGIN: `${HOST}/php/web_v2_api/user.php?inAjax=1&do=singin`
+/**
+ * Created by sioxa on 2016/12/25 0025.
+ */
+export default {
+  rank_songs: {
+      url: 'api/v8/fcg-bin/fcg_v8_toplist_cp.fcg',
+      params: (id) => {
+          return {
+              g_tk: 5381,
+              uin: 0,
+              format: 'json',
+              inCharset: 'utf-8',
+              outCharset: 'utf-8',
+              notice: 0,
+              platform: 'h5',
+              needNewCode: 1,
+              tpl: 3,
+              page: 'detail',
+              type: 'top',
+              topid: id,
+              _: new Date().getTime()
+          }
+      },
+      jsonp: 'jsonpCallback'
+  },
+  rank_list: {
+      url: 'api/v8/fcg-bin/fcg_myqq_toplist.fcg',
+      params: () => {
+          return {
+              format: 'jsonp',
+              g_tk: 5381,
+              uin: 0,
+              inCharset: 'utf-8',
+              outCharset: 'utf-8',
+              notice: 0,
+              platform: 'h5',
+              needNewCode: 1,
+              _: new Date().getTime()
+          }
+      },
+      jsonp: 'jsonpCallback'
+  },
+  album: {
+      url: 'api/v8/fcg-bin/fcg_v8_album_info_cp.fcg',
+      params: (id) => {
+          return {
+              albummid: id,
+              g_tk: 5381,
+              loginUin: 0,
+              hostUin: 0,
+              format: 'jsonp',
+              inCharset: 'utf8',
+              outCharset: 'utf-8',
+              notice: 0,
+              platform: 'yqq',
+              needNewCode: 0
+          }
+      },
+      jsonp: 'jsonpCallback'
+  },
+  singer_info: {
+      url: 'api/v8/fcg-bin/fcg_v8_singer_track_cp.fcg',
+      params: (id) => {
+          return {
+              order: 'listen',
+              begin: 0,
+              num: 8,
+              singermid: id,
+              g_tk: 5381,
+              uin: 0,
+              format: 'jsonp',
+              inCharset: 'utf-8',
+              outCharset: 'utf-8',
+              notice: 0,
+              platform: 'h5page',
+              needNewCode: 1,
+              from: 'h5',
+              _: new Date().getTime()
+          }
+      },
+      jsonp: 'jsonpCallback'
+  },
+  search: {
+      url: `api/splcloud/fcgi-bin/smartbox_new.fcg`,
+      params: (key) => {
+          return {
+              key: key,
+              g_tk: 5381,
+              loginUin: 0,
+              hostUin: 0,
+              inCharset: 'utf8',
+              outCharset: 'utf-8',
+              notice: 0,
+              platform: 'yqq',
+              needNewCode: 0
+          }
+      }
+  },
+  hotkey: {
+      url: 'api/splcloud/fcgi-bin/gethotkey.fcg',
+      params: () => {
+          return {
+              g_tk: 5381,
+              loginUin: 0,
+              hostUin: 0,
+              format: 'jsonp',
+              inCharset: 'utf8',
+              outCharset: 'utf-8',
+              notice: 0,
+              platform: 'yqq',
+              needNewCode: 0
+          }
+      },
+      jsonp: 'jsonpCallback'
+  },
+  home_page_data: {
+      url: 'api/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg',
+      params: () => {
+          return {
+              g_tk: 5381,
+              uin: 0,
+              format: 'jsonp',
+              inCharset: 'utf-8',
+              outCharset: 'utf-8',
+              notice: 0,
+              platform: 'h5',
+              needNewCode: 1,
+              _: new Date().getTime()
+          }
+      },
+      jsonp: 'jsonpCallback'
+  },
+  lyric: {
+      url: 'api/lyric/fcgi-bin/fcg_query_lyric.fcg',
+      params: (id) => {
+          return {
+              nobase64: 1,
+              musicid: id,
+              songtype: 0
+          }
+      },
+      jsonp: 'callback'
+  },
+  cd: {
+      url: 'api/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg',
+      params: (id) => {
+          return {
+              type: 1,
+              json: 1,
+              utf8: 1,
+              onlysong: 0,
+              disstid: id,
+              format: 'jsonp',
+              g_tk: 5381,
+              loginUin: 0,
+              hostUin: 0,
+              inCharset: 'utf8',
+              outCharset: 'utf-8',
+              notice: 0,
+              platform: 'yqq',
+              needNewCode: 0
+          }
+      },
+      jsonp: 'jsonpCallback'
+  },
+  first_page_data: {
+      url: "api/v8/fcg-bin/fcg_first_yqq.fcg",
+      params() {
+          return {
+              format: 'jsonp',
+              tpl: 'v12',
+              page: 'other',
+              rnd: 0,
+              g_tk: new Date().getTime(),
+              loginUin: 0,
+              hostUin: 0,
+              inCharset: 'utf8',
+              outCharset: 'GB2312',
+              notice: 0,
+              platform: 'yqq',
+              needNewCode: 0
+          }
+      },
+      jsonp: 'jsonpCallback'
+  }
 }
-export default api

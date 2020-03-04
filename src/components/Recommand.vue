@@ -83,21 +83,6 @@ export default {
     .catch(error=>{
       this.loadingState = '加载失败'
     });
-  },
-  filters:{
-    // listenCount: num => Math.round(num / 1000) / 10 + '万'
-  },
-  watch: {
-    mvList: {
-      handler:function(val, oldVal){
-        
-        setTimeout(function() {
-          console.log(document.getElementsByClassName('recommand'))
-            var activeHight = document.getElementsByClassName('swiper-item')[1].offsetHeight;
-            document.getElementsByClassName('swiper-wrapper')[0].style.height = `${activeHight}px`;
-        }, 500);
-      },
-    }
   }
 };
 </script>

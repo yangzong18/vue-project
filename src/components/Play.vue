@@ -211,6 +211,20 @@ export default {
         }
 
     }
+
+    @media screen and (min-width: 68vh) {
+        .music-album {
+            height: 68vh;
+        }
+
+        .button-group {
+            top: 68vh;
+            width: 68vh;
+            margin: 0 auto;
+            margin-left: -34vh;
+            left: 50%;
+        }
+    }
     
 
 }

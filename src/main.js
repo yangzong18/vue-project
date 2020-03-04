@@ -5,7 +5,10 @@ import App from './App'
 import store from '@/store'
 import router from './router'
 import VueLazyload from 'vue-lazyload'
-
+import filters from '@/utils/filter.js'
+Object.keys(filters).forEach(k => {
+　　Vue.filter(k, filters[k])
+})
 Vue.use(VueLazyload, {
     error: require('./assets/loading.svg'),
     loading: require('./assets/loading.svg'),

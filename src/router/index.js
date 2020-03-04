@@ -13,6 +13,10 @@ const myRouter = new Router({
     return { x: 0, y: 0 }
   },
   routes: [
+    // { path: '/singer/:id',name:'singer', component: Singer },
+    // { path: '/album/:id',name:'album',  component: Album },
+    // { path: '/rank/:id',name:'rank',  component: RankPage },
+    // { path: '/cd/:id',name:'cd',  component: Cd }
   ]
 });
 export default myRouter

@@ -73,6 +73,11 @@ module.exports = {
         test: /\.styl$/,
         loader: 'style-loader!css-loader!stylus-loader',
         include: []
+      },
+      {
+        test: /\.less$/,
+        loader: "style-loader!css-loader!less-loader",
+        include: []
       }
         ]
       },

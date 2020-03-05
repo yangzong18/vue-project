@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <action-sheet></action-sheet>
     <search v-show="!blurBgShow" @searchshow="rankshow=false" @searchhide="rankshow=true"></search>
     <div class="content-warper" v-show="rankshow&&!blurBgShow">
       <swiper :options="swiperOption" class="swiper-box" ref="appSwiper">
@@ -16,6 +17,9 @@
     <transition name="play-slide" @after-enter="showBlurBg" @before-leave="hideBlurBg" @after-leave="routerViewAnimation='page-slide'">
       <play v-show="playPageShow"></play>
     </transition>
+    <transition name="play-slide">
+      <playing-list v-if="$store.state.NotifyService.playingList.show"></playing-list>
+    </transition>
     <transition name="bar-slide">
       <div id="play-bar" v-show="!playPageShow">
         <div class="play-bar-image-container" @touchstart="showPlayPage" @click="showPlayPage">
@@ -29,10 +33,12 @@
 </template>
 <script>
 import '@/common/base.css'
+import ActionSheet from "@/components/ActionSheet";
 import Search from "@/components/Search";
 import Rank from "@/components/Rank";
 import Recommand from "@/components/Recommand";
 import Play from "@/components/Play";
+import PlayingList from "@/components/PlayingList";
 import { mapMutations, mapState, mapGetters } from "vuex";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import 'swiper/dist/css/swiper.css'
@@ -77,20 +83,26 @@ export default {
     hideBlurBg() {
       this.blurBgShow = false;
     },
-    changeHight(index) {
-      setTimeout(function() {
-          var activeHight = document.getElementsByClassName('swiper-slide-active')[index].offsetHeight;
+    handleScroll (e) {
+      // 页面滚动距顶部距离
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || 
+                document.body.scrollTop
+      var scroll = scrollTop - this.i;
+      this.i = scrollTop;
+      if(scroll>=0){
+          var activeHight = document.getElementsByClassName('swiper-slide-active')[0].offsetHeight;
           document.getElementsByClassName('swiper-wrapper')[0].style.height = `${activeHight}px`;
-      }, 500);
+      }
     },
-
-    ...mapMutations(["play", "pause", "playContinue"])
+    ...mapMutations(["play", "pause", "playContinue","playIndex"])
   },
   components:{
     Search,
     Rank,
     Recommand,
+    ActionSheet,
     Play,
+    PlayingList,
     swiper,
     swiperSlide,
   },
@@ -99,16 +111,14 @@ export default {
     ...mapState({
       playing: state => state.PlayService.playing,
       song: state => state.PlayService.song
-    }),
-    swiper() {
-      return this.$refs.appSwiper.swiper
-    }
+    })
   },
   mounted() {
-      setInterval(() => {
+      setTimeout(() => {
         var activeHight = document.getElementsByClassName('swiper-slide-active')[0].offsetHeight;
-          document.getElementsByClassName('swiper-wrapper')[0].style.height = `${activeHight}px`;
-      }, 3000)
+        document.getElementsByClassName('swiper-wrapper')[0].style.height = `${activeHight}px`;
+      }, 500)
+      window.addEventListener('scroll', this.handleScroll, true);
     }
   
 }

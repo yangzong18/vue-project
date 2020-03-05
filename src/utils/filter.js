@@ -14,7 +14,20 @@ const turnHtml = function(html){
       .replace(/&#47;/g, "、");
 }
 
+const singer = val => {
+    if (typeof val === 'string') {
+      return val
+    } else if (val instanceof Array) {
+      let singer = ''
+      val.forEach(item => {
+        singer = singer + item.name + ' '
+      })
+      return singer
+    }
+  }
+
 export default {
     listenCount,
-    turnHtml
+    turnHtml,
+    singer
 }

@@ -34,7 +34,7 @@
         <div class="result-item" v-for="(item,index) in searchRes.song.itemlist">
           <p class="result-title" @click="play(index)"> {{item.name}} </p>
           <p class="result-author" @click="play(index)">- {{item.singer}}  </p>
-          <div class="action-button">
+          <div class="action-button" @touchend.prevent="showMenu(index)" @click="showMenu(index)">
             <img src="@/assets/icon-...black.png" />
           </div>
         </div>
@@ -79,6 +79,7 @@
   </div>
 </template>
 <script>
+
 export default {
   data() {
     return {
@@ -86,7 +87,8 @@ export default {
       key: "",
       searchRes: null,
       searchHistory: [],
-      hotkey: null
+      hotkey: null,
+      menus: {},
     };
   },
   filters: {
@@ -103,6 +105,27 @@ export default {
       this.searchShow = true;
       this.$emit('searchshow')
     },
+    showMenu: function (num) {
+        this.menuedIndex = num
+        let that = this
+        this.$store.dispatch('notifyActionSheet', {
+          menus: {
+            'title.noop': this.searchRes.song.itemlist[num].name + '<br/><span style="color:#666;font-size:12px;">' + this.searchRes.song.itemlist[num].singer + '</span>',
+            playAsNext: '下一首播放',
+            addToPlayList: '添加到播放列表'
+          },
+          handler: {
+            ['cancel'](){
+            },
+            ['playAsNext'](){
+              that.$store.commit('addToPlayListAsNextPlay', that.searchRes.song.itemlist[that.menuedIndex])
+            },
+            ['addToPlayList'](){
+              that.$store.commit('addPlayList', that.searchRes.song.itemlist[that.menuedIndex])
+            }
+          }
+        })
+      },
     search(key) {
       this.key = key;
       this.$store.dispatch("search", key).then(response => {

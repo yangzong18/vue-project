@@ -43,6 +43,7 @@ export default {
       state.playList.push(item)
     },
     delFromPlayList(state,index){
+      console.log(index)
       if(isNaN(index) || index >= state.playList.length){
         return false;
       }

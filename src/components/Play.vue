@@ -20,7 +20,7 @@
       </div>
       <div class="music-info">
         <p class="music-name"> {{song.name}} </p>
-        <p class="music-author"> {{song.author}} </p>
+        <p class="music-author"> {{song.singer | singer}} </p>
       </div>
       <div class="lyric">
         <lyric :songid="song.id" :currentTime="currentTime"></lyric>
@@ -31,16 +31,16 @@
             <img src="@/assets/icon-like.png" />
           </li>
           <li>
-            <img src="@/assets/icon-shangyiqu.png"/>
+            <img src="@/assets/icon-shangyiqu.png" @touchend.prevent.stop="playFront" @click="playFront"/>
           </li>
           <li>
             <img :src="playing ? $parent.iconPause :$parent.iconPlay" @click="$parent.tapButton" @touchend="$parent.tapButton"/>
           </li>
           <li>
-            <img src="@/assets/icon-xiayiqu.png"/>
+            <img src="@/assets/icon-xiayiqu.png" @touchend.prevent.stop="playNext" @click="playNext"/>
           </li>
           <li>
-            <img src="@/assets/icon-list.png"/>
+            <img src="@/assets/icon-list.png" @touchend.prevent.stop="showPlayList" @click="showPlayList"/>
           </li>
         </ul>
       </div>
@@ -54,23 +54,11 @@ export default {
     methods:{
         hidePlayPage(){
             this.$parent.playPageShow = false;
-        }
-    },
-    filters:{
-        htmlEscape(text) {
-                return text.replace(/[<>"&]/g, function(match, pos, originalText) {
-                switch(match) {
-                    case "<":
-                        return "&lt;";
-                    case ">":
-                        return "&gt;";
-                    case "&":
-                        return "&amp;";
-                    case "\"":
-                        return "&quot;";
-                }
-            });
-        }
+        },
+        showPlayList() {
+            this.$store.commit('showPlayingList')
+        },
+        ...mapMutations(['play','pause','playFront','playNext'])
     },
     components:{
         Lyric

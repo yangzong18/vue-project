@@ -4,7 +4,7 @@
     <div class="content" v-if="!loading">
       <swiper :options="swiperOptionIn" class="swiper-position">
         <swiper-slide v-for="s in slider" v-bind:key="s.id">
-          <img class="recommand-swiper-img" :src="s.pic">
+          <img class="recommand-swiper-img" :src="s.pic" @click="jump(s)">
         </swiper-slide>
         <div class="swiper-pagination-white swiper-pagination-position" slot="pagination"></div>
       </swiper>
@@ -49,6 +49,7 @@
 <script>
 import {swiper, swiperSlide} from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
+import {types} from '@/config/def'
 export default {
   data() {
     return {
@@ -72,7 +73,34 @@ export default {
     swiper,
     swiperSlide
   },
-  methods: {},
+  methods: {
+    jump(info){
+      switch(info.type){
+        case types.ALBUM:
+          this.$router.push({
+              name: 'album',
+              params: {
+                id: info.id
+              }
+          })
+          break;
+        case types.CD:
+          this.$router.push({
+              name: 'cd',
+              params: {
+                id: info.id
+              }
+            })
+          break;  
+        case types.JUMP:
+          window.open(info.jumpurl)
+          break; 
+        default:
+          console.log(info)
+          break;   
+      }
+    }
+  },
   created() {
     this.$store.dispatch("getRecommands").then(response => {
         this.loading = false

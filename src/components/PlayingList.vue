@@ -1,7 +1,7 @@
 <template>
   <div id="playing-list">
     <div class="title border-1px border-1px-after">
-      <img :src="buttonImage" />
+      <img :src="buttonImage" :alt="playModeName" @click="changePlayMode"/>
       <p class="title-text">{{playModeName}} {{playList.length}} 首歌曲</p>
       <p class="title-button" @touchend.prevent="hidePlayList" @click="hidePlayList">完成</p>
     </div>
@@ -62,6 +62,7 @@ export default {
           return singer
         }
       },
+      ...mapMutations(['changePlayMode']),
    },
   computed: {
     buttonImage() {
@@ -70,6 +71,7 @@ export default {
     playModeName(){
         return def.PLAY_MODE_NAME[this.playMode];
     },
+    
     ...mapState({
       playList: state => state.PlayService.playList,
       playMode: state => state.PlayService.playMode,

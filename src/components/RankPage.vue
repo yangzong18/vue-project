@@ -84,7 +84,7 @@ export default {
       let that = this;
       this.$store.dispatch('notifyActionSheet',{
           menus:{
-              'title.noop':`${this.topListData.songlist[index].data.songorig}<br/><span style="color:#666;font-size:12px;">${this.getSingerStr(this.topListData.songlist[index].data.singer)}</span>`,
+              'title.noop':`${this.topListData.songlist[index].data.songorig}<br/><span style="color:#666;font-size:12px;">${this.$options.filters['singer'](this.topListData.songlist[index].data.singer)}</span>`,
               playAsNext: '下一首播放',
               addToPlayList: '添加到播放列表'
           },
@@ -111,17 +111,6 @@ export default {
           }
         }
       })
-    },
-    getSingerStr: val => {
-      if (typeof val === 'string') {
-        return val
-      } else if (val instanceof Array) {
-        var singer = ''
-        val.forEach(item => {
-          singer = singer + item.name + ' '
-        })
-        return singer
-      }
     }
   },
   created(){

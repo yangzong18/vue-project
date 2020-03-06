@@ -4,7 +4,6 @@
 import Vue from 'vue'
 
 import fecth from '@/utils/fecth.js'
-import API from '../config/api'
 
 export default {
   actions: {
@@ -24,6 +23,7 @@ export default {
         topid: id,
         _: new Date().getTime()
     };
+    
       return fecth.get(`api/v8/fcg-bin/fcg_v8_toplist_cp.fcg`,params)
     },
     getRankList({}){

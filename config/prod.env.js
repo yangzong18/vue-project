@@ -1,6 +1,6 @@
 'use strict'
 module.exports = {
   NODE_ENV: '"production"',
-  HOST: '"https://www.daiwei.site"',
+  HOST: '""',
   MOCK: false // 生产环境禁用mock
 }

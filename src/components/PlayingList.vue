@@ -11,13 +11,10 @@
           <div class="music-info">
             <p class="music-name"> {{music.name}} </p>
             <p class="music-author">- {{music.singer|singer}} </p>
-            <img src="./../assets/icon-playing.svg" v-show="" alt="正在播放" class="music-playing"/>
+            <img src="@/assets/icon-playing.svg" v-show="index == num" alt="正在播放" class="music-playing"/>
           </div>
           <div class="action-button" @touchend.prevent="showMenu(num)" @click="showMenu(num)">
-            <img
-              
-              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsSAAALEgHS3X78AAAA20lEQVRYw+3TsQqCQBwG8A8bQhRqOAsadDMH94aUJifX9mafwkcJnH0Lt1ahB6hBh4aCQAiiloQIu4awHL4f3PT/vju44wAiIiIioofID+LQsPKFPtqHhpVHfhB3prs0nczTRAHgVi9PE8XSdLJPB7Tejfwgfg09h2W38ZNuaFh5U6hej3mjtrsKAJyraih7Btm87a4CALqqHmVB2bztrgIApmOnnibKppCnidKc2um7TX7W7eov7tXB7emwDmdzfVxdxUTpX9yB2NmumyT5ZvXpkH91iYiIiOhrd4yRzGEoS8frAAAAAElFTkSuQmCC"
-            />
+            <img src="@/assets/icon-...black.png" />
           </div>
         </li>
       </ul>

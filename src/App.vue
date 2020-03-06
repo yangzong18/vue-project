@@ -1,6 +1,9 @@
 <template>
   <div id="app">
     <action-sheet></action-sheet>
+    <transition :name="routerViewAnimation">
+      <router-view v-show="!blurBgShow"></router-view>
+    </transition>
     <search v-show="!blurBgShow" @searchshow="rankshow=false" @searchhide="rankshow=true"></search>
     <div class="content-warper" v-show="rankshow&&!blurBgShow">
       <swiper :options="swiperOption" class="swiper-box" ref="appSwiper">
@@ -23,7 +26,7 @@
     <transition name="bar-slide">
       <div id="play-bar" v-show="!playPageShow">
         <div class="play-bar-image-container" @touchstart="showPlayPage" @click="showPlayPage">
-          <img class="play-bar-image" src="/static/img/Vue_Music_Blur.f29e504.png">
+          <img class="play-bar-image" v-lazy="coverImgUrl">
         </div>
         <p class="play-bar-text" @touchstart="showPlayPage" @click="showPlayPage"> {{song.name}} </p>
         <img class="play-bar-button" :src="playing?iconPause:iconPlay" @click="tapButton">

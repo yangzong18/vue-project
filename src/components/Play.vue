@@ -72,7 +72,7 @@ export default {
             playing:state=> state.PlayService.playing,
             song:state=> state.PlayService.song
         })
-    }
+    },
 };
 </script>
 <style lang="scss">

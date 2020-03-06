@@ -30,14 +30,6 @@ function checkStatus (response) {
     // 如果不需要除了data之外的数据，可以直接 return response.data
   }
 
-  if (!store.getters.userInfo) {
-    const userInfo = DGlobal.storage.getCookie('c_user_info')
-    store.dispatch({
-      type: 'set_UserInfo',
-      data: userInfo
-    })
-  }
-
   // 异常状态下，把错误信息返回去
   return {
     status: -404,

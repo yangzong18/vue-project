@@ -53,7 +53,7 @@ import {mapMutations, mapState, mapGetters} from 'vuex'
 export default {
     methods:{
         hidePlayPage(){
-            this.$parent.playPageShow = false;
+          this.$parent.playPageShow = false;
         },
         showPlayList() {
             this.$store.commit('showPlayingList')
@@ -142,7 +142,7 @@ export default {
                 .indicater {
                     width: 2px;
                     position: absolute;
-                    height: 12px;
+                    height: 4px;
                     background: red;
                     top:0;
                 }

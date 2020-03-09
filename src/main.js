@@ -6,6 +6,8 @@ import store from '@/store'
 import router from './router'
 import VueLazyload from 'vue-lazyload'
 import filters from '@/utils/filter.js'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 Object.keys(filters).forEach(k => {
 　　Vue.filter(k, filters[k])
 })
@@ -15,6 +17,7 @@ Vue.use(VueLazyload, {
     attempt: 1
   }
 )
+Vue.use(ElementUI)
 
 /* eslint-disable no-new */
 new Vue({

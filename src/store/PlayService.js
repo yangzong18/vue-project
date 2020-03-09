@@ -1,6 +1,6 @@
 import * as def from '@/config/def';
 import store from '@/store/index.js'
-
+import { Message } from 'element-ui';
 const player = new QMplayer();
 player.on('timeupdate',function(){
   store.commit(
@@ -75,8 +75,19 @@ export default {
       state.duration = time
     },
     play(state){
+      console.log(state.song)
       player.play(state.song.mid)
-      state.playing = true
+      player.on("error", function () { 
+        Message.closeAll()
+        Message({
+          message: '您播放的歌曲仅限客户端播放，建议您打开客户端进行播放',
+          type: 'error'
+        },true)
+        
+      }) 
+      player.on("play", function () { 
+        state.playing = true
+      }) 
     },
     pause(state){
       player.pause()

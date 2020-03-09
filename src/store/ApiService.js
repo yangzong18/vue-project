@@ -72,7 +72,7 @@ export default {
           from: 'h5',
           _: new Date().getTime()
       };
-      return fetch.get(`api/v8/fcg-bin/fcg_v8_singer_track_cp.fcg`,params)
+      return fecth.get(`api/v8/fcg-bin/fcg_v8_singer_track_cp.fcg`,params)
     },
     search({}, key){
       let params = {
@@ -126,9 +126,9 @@ export default {
           utf8: 1,
           onlysong: 0,
           disstid: id,
-          format: 'jsonp',
+          format: 'json',
           g_tk: 5381,
-          loginUin: 0,
+          loginUin: '183851063',
           hostUin: 0,
           inCharset: 'utf8',
           outCharset: 'utf-8',

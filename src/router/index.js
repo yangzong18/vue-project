@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import RankPage from '@/components/RankPage.vue'
 import Album from '@/components/Album.vue'
+import Singer from '@/components/Singer.vue'
+import Cd from '@/components/Cd.vue'
 const routerPush = Router.prototype.push
 Router.prototype.push = function push(location) {
   return routerPush.call(this, location).catch(error=> error)
@@ -14,10 +16,10 @@ const myRouter = new Router({
     return { x: 0, y: 0 }
   },
   routes: [
-    // { path: '/singer/:id',name:'singer', component: Singer },
+    { path: '/singer/:id',name:'singer', component: Singer },
     { path: '/album/:id',name:'album',  component: Album },
     { path: '/rank/:id',name:'rank',  component: RankPage },
-    // { path: '/cd/:id',name:'cd',  component: Cd }
+    { path: '/cd/:id',name:'cd',  component: Cd }
   ]
 });
 export default myRouter

@@ -8,6 +8,7 @@
         </form>
       </div>
       <div
+        ref="cancel"
         class="search-cancel"
         :class="{ 'search-cancel-show' : searchShow }"
         @click="searchCancel()"
@@ -15,13 +16,17 @@
     </div>
     <div class="hotKey" v-if="searchRes == null && searchShow">
       <div class="search-history">
-        <div class="search-history-item" v-for="(item) in searchHistory" @click="search(item)">{{item}}</div>
+        <div
+          class="search-history-item"
+          v-for="(item) in searchHistory"
+          @click="search(item)"
+        >{{item}}</div>
       </div>
       <ul>
-        <li v-for="(item,index) in hotkey" @click="search(item.k)">
+        <li v-for="(item,index) in hotkey" @click="search(item.k)" :key="index">
           <span class="hotkey-index">{{index+1}}</span>
           <span class="hotkey-k">{{item.k}}</span>
-          <span class="hotkey-n">{{item.n | searchVol}}</span>
+          <span class="hotkey-n">{{item.n | listenCount}}</span>
         </li>
       </ul>
     </div>
@@ -31,9 +36,9 @@
           <img class="group-img" src="@/assets/icon-music.png" alt />
           <p class="group-p">单曲</p>
         </div>
-        <div class="result-item" v-for="(item,index) in searchRes.song.itemlist">
-          <p class="result-title" @click="play(index)"> {{item.name}} </p>
-          <p class="result-author" @click="play(index)">- {{item.singer}}  </p>
+        <div class="result-item" v-for="(item,index) in searchRes.song.itemlist" :key="index">
+          <p class="result-title" @click="play(index)">{{item.name}}</p>
+          <p class="result-author" @click="play(index)">- {{item.singer}}</p>
           <div class="action-button" @touchend.prevent="showMenu(index)" @click="showMenu(index)">
             <img src="@/assets/icon-...black.png" />
           </div>
@@ -44,11 +49,16 @@
           <img class="group-img" src="@/assets/icon-album.png" alt />
           <p class="group-p">专辑</p>
         </div>
-        <div class="album-item" v-for="(item,index) in searchRes.album.itemlist">
-          <img class="album-img" v-lazy="item.pic"/>
+        <div
+          class="album-item"
+          v-for="(item,index) in searchRes.album.itemlist"
+          :key="index"
+          @click="showAlbum(item.mid)"
+        >
+          <img class="album-img" v-lazy="item.pic" />
           <div class="album-info">
-            <div class="album-name"> {{item.name}} </div>
-            <div class="album-author"> {{item.singer}} </div>
+            <div class="album-name">{{item.name}}</div>
+            <div class="album-author">{{item.singer}}</div>
           </div>
         </div>
       </div>
@@ -57,11 +67,15 @@
           <img src="@/assets/icon-singer.png" alt class="group-img" />
           <p class="group-p">歌手</p>
         </div>
-        <div class="singer-item" v-for="(item,index) in searchRes.singer.itemlist">
-          <img class="singer-img" v-lazy="item.pic"
-          />
+        <div
+          class="singer-item"
+          v-for="(item,index) in searchRes.singer.itemlist"
+          :key="index"
+          @click="showSinger(item.mid)"
+        >
+          <img class="singer-img" v-lazy="item.pic" />
           <div class="singer-p">
-            <p> {{item.name}} </p>
+            <p>{{item.name}}</p>
           </div>
         </div>
       </div>
@@ -70,16 +84,21 @@
           <img src="@/assets/icon-mv.png" class="group-img" />
           <p class="group-p">MV</p>
         </div>
-        <div class="mv-item" v-for="(mv,index) in searchRes.mv.itemlist">
-          <p class="mv-name"> {{mv.name}} </p>
-          <p class="mv-author"> {{mv.singer}} </p>
+        <div
+          class="mv-item"
+          v-for="(mv,index) in searchRes.mv.itemlist"
+          :key="index"
+          @click="openmv(mv.vid)"
+        >
+          <p class="mv-name">{{mv.name}}</p>
+          <p class="mv-author">{{mv.singer}}</p>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-
+import { mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
@@ -88,44 +107,63 @@ export default {
       searchRes: null,
       searchHistory: [],
       hotkey: null,
-      menus: {},
+      menus: {}
     };
-  },
-  filters: {
-    searchVol: num => `${Math.round(num / 1000) / 10}万`
   },
   methods: {
     searchCancel() {
       this.searchShow = false;
       this.key = "";
       this.searchRes = null;
-      this.$emit('searchhide')
+      this.$emit("searchhide");
+    },
+    showAlbum(mid) {
+      this.$router.push({
+        name: "album",
+        params: { id: mid }
+      });
+    },
+    showSinger(mid) {
+      this.$emit("searchhide");
+      this.$router.push({
+        name: "singer",
+        params: { id: mid }
+      });
     },
     focus() {
       this.searchShow = true;
-      this.$emit('searchshow')
+      this.$emit("searchshow");
     },
-    showMenu: function (num) {
-        this.menuedIndex = num
-        let that = this
-        this.$store.dispatch('notifyActionSheet', {
-          menus: {
-            'title.noop': this.searchRes.song.itemlist[num].name + '<br/><span style="color:#666;font-size:12px;">' + this.searchRes.song.itemlist[num].singer + '</span>',
-            playAsNext: '下一首播放',
-            addToPlayList: '添加到播放列表'
+    showMenu: function(num) {
+      this.menuedIndex = num;
+      let that = this;
+      this.$store.dispatch("notifyActionSheet", {
+        menus: {
+          "title.noop":
+            this.searchRes.song.itemlist[num].name +
+            '<br/><span style="color:#666;font-size:12px;">' +
+            this.searchRes.song.itemlist[num].singer +
+            "</span>",
+          playAsNext: "下一首播放",
+          addToPlayList: "添加到播放列表"
+        },
+        handler: {
+          ["cancel"]() {},
+          ["playAsNext"]() {
+            that.$store.commit(
+              "addToPlayListAsNextPlay",
+              that.searchRes.song.itemlist[that.menuedIndex]
+            );
           },
-          handler: {
-            ['cancel'](){
-            },
-            ['playAsNext'](){
-              that.$store.commit('addToPlayListAsNextPlay', that.searchRes.song.itemlist[that.menuedIndex])
-            },
-            ['addToPlayList'](){
-              that.$store.commit('addPlayList', that.searchRes.song.itemlist[that.menuedIndex])
-            }
+          ["addToPlayList"]() {
+            that.$store.commit(
+              "addPlayList",
+              that.searchRes.song.itemlist[that.menuedIndex]
+            );
           }
-        })
-      },
+        }
+      });
+    },
     search(key) {
       this.key = key;
       this.$store.dispatch("search", key).then(response => {
@@ -139,11 +177,15 @@ export default {
         localStorage.searchHistory = JSON.stringify(this.searchHistory);
       });
     },
-    play(index){
-        this.$store.commit('setPlayList', {
-          index: index,
-          list: this.searchRes.song.itemlist
-        })
+    play(index) {
+      this.$store.commit("setPlayList", {
+        index: index,
+        list: this.searchRes.song.itemlist
+      });
+      this.$store.commit("play");
+    },
+    openmv(vid) {
+      window.open("https://y.qq.com/portal/mv/v/" + vid + ".html");
     }
   },
   created() {
@@ -153,6 +195,11 @@ export default {
     this.$store.dispatch("getHotKey").then(res => {
       this.hotkey = res.data.data.hotkey.slice(0, 10);
     });
+  },
+  computed: {
+    ...mapState({
+      playing: state => state.PlayService.playing
+    })
   }
 };
 </script>
@@ -361,7 +408,7 @@ export default {
         line-height: 20px;
       }
       .mv-author {
-        color:#929292;
+        color: #929292;
         font-size: 12px;
         line-height: 20px;
       }

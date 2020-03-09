@@ -14,7 +14,7 @@
     </div>
     <div id="singer-header" class="header border-1px border-1px-after" v-if="topinfo">
       <div class="header-blank"></div>
-      <div class="header-warp" :style="{backgroud:gradientcolor}">
+      <div class="header-warp" :style="{background:gradientcolor}">
         <div class="singer-info" :class="{dark:isDark}">
           <h1 class="singer-name"> {{topListData.topinfo.ListName}} </h1>
           <p class="singer-fans"> {{topListData.topinfo.listennum | listenCount}} </p>

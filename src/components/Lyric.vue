@@ -25,7 +25,10 @@ export default {
                   .split('.')
                   .reduce((a, b) =>
                   parseInt(a) * 100 + parseInt(b))) - 120 <= that.currentTimeStamp) {
-              if (that.lyric[key] !== '\n') pastLyric.push(that.lyric[key])
+              if (that.lyric[key] !== '\n'){
+                let tmpStr = that.$options.filters['lyricTurn'](that.lyric[key]);
+                pastLyric.push(tmpStr)
+              }
             } else if (i <= 1 && that.lyric[key] !== '\n') {
               pastLyric.push(that.lyric[key])
               i++
@@ -51,7 +54,8 @@ export default {
               ret = JSON.parse(matches[1])
             }
           }
-          let lyric = ret.lyric
+          if(ret.lyric.length > 0){
+            let lyric = ret.lyric
             this.lyric = Base64
               .decode(lyric)
               .split('[')
@@ -63,7 +67,9 @@ export default {
               .reduce((a, b) => {
                 return {...a, ...b}
               })
+          }
           })
+          
       }
     }
 };

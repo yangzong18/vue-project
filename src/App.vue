@@ -4,7 +4,7 @@
     <transition :name="routerViewAnimation">
       <router-view v-show="!blurBgShow"></router-view>
     </transition>
-    <search v-show="!blurBgShow" @searchshow="rankshow=false" @searchhide="rankshow=true"></search>
+    <search ref="search" v-show="!blurBgShow" @searchshow="rankshow=false" @searchhide="rankshow=true"></search>
     <div class="content-warper" v-show="rankshow&&!blurBgShow">
       <swiper :options="swiperOption" class="swiper-box" ref="appSwiper">
         <swiper-slide class="swiper-item">
@@ -117,12 +117,31 @@ export default {
     })
   },
   mounted() {
+      if(this.$route.path == '/'){
+        this.rankshow = true
+      }else{
+        this.rankshow = false
+      }
       setTimeout(() => {
         var activeHight = document.getElementsByClassName('swiper-slide-active')[0].offsetHeight;
         document.getElementsByClassName('swiper-wrapper')[0].style.height = `${activeHight}px`;
       }, 500)
       window.addEventListener('scroll', this.handleScroll, true);
-    }
+      
+    },
+    watch: {
+      '$route'(to,from){
+        if(to.path == '/'){
+          if(this.$refs.search.searchShow){
+            this.rankshow = false 
+          }else{
+            this.rankshow = true 
+          }
+        }else{
+          this.rankshow = false
+        }
+      }
+    },
   
 }
 </script>

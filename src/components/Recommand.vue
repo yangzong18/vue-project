@@ -13,12 +13,12 @@
           <p class="title-text">热门歌单</p>
         </div>
         <div class="list-content">
-          <div class="list-item" v-for="item in songList">
+          <div class="list-item" v-for="item in songList" @click="$router.push({name: 'cd', params: {id: item.dissid}})">
             <div class="list-img">
               <img v-lazy="item.imgurl"/>
               <div class="listen-count">
                 <img src="@/assets/icon-erji.svg"/>
-                <span data-v-4d423771>{{item.listennum | listenCount}}</span>
+                <span>{{item.listennum | listenCount}}</span>
               </div>
             </div>
             <div class="list-info">

@@ -126,7 +126,6 @@ export default {
     created(){
         this.$store.dispatch('getAlbum',this.mid).then((response)=>{
             this.album = response.data.data
-            console.log(this.album)
         })
     }
 }

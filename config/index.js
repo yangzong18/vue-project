@@ -13,6 +13,10 @@ module.exports = {
     proxyTable: {
       '/api': { // api只是一个代号，可以随便取，但是要跟下面的那个api保持一致
         target: 'https://c.y.qq.com', // 需要请求的链接地址
+        headers: {
+          referer: 'https://c.y.qq.com/',
+          host: 'c.y.qq.com'
+        },
         changeOrigin: true,  // 跨域必开
         pathRewrite: {
           '^/api': ''

@@ -14,6 +14,19 @@ const turnHtml = function(html){
       .replace(/&#47;/g, "、");
 }
 
+const lyricTurn = html => {
+  return html
+      .replace(/&nbsp;/g, " ")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, "\"")
+      .replace(/&#39;/g, "\'")
+      .replace(/&#91;/g, "[")
+      .replace(/&#93;/g, "]")
+      .replace(/&#47;/g, "、")
+      .replace(/&apos;/g, "'")
+      .replace(/&quot;/g,"\"");
+}
+
 const singer = val => {
     if (typeof val === 'string') {
       return val
@@ -29,6 +42,7 @@ const singer = val => {
 export default {
     listenCount,
     turnHtml,
-    singer
+    singer,
+    lyricTurn
 
 }

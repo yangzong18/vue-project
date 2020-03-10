@@ -1,6 +1,6 @@
 'use strict'
 module.exports = {
   NODE_ENV: '"production"',
-  HOST: '""',
+  BASE_API: '""',
   MOCK: false // 生产环境禁用mock
 }

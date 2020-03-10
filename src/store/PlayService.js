@@ -39,6 +39,23 @@ export default {
       state.index = playList.index
       state.song = state.playList[state.index]
     },
+    clickProgress(state,e){
+      const l = e.offsetX
+      const w = document.getElementById('progress-bar').offsetWidth
+      player.currentTime = Math.floor(l / w * state.duration)
+    },
+    dragMouseDown(state,e){
+        var x = e.clientX
+        let l = e.target.offsetLeft
+        let w = document.getElementById('progress-bar').offsetWidth
+        const moveProgress = document.getElementById('progress-bar')
+        moveProgress.onmouseup = function (event) {
+          console.log('up')
+        }
+        moveProgress.onmouseleave = function (event) {
+          console.log('leave')
+        }
+    },
     addPlayList(state,item){
       if(state.playList.indexOf(item) === -1){
         state.playList.push(item)
@@ -75,7 +92,6 @@ export default {
       state.duration = time
     },
     play(state){
-      console.log(state.song)
       player.play(state.song.mid)
       player.on("error", function () { 
         Message.closeAll()

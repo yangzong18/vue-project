@@ -9,7 +9,7 @@
     <div class="button-group">
       <img class="blurbg" :src="coverImgUrl"/>
       <div class="progress-bar-group">
-        <div class="progress-bar">
+        <div class="progress-bar" id="progress-bar" @click="clickProgress" >
           <div class="progress" :style="{width:indicatorPosition+'%'}"></div>
           <div class="indicater" :style="{left:indicatorPosition+'%'}"></div>
         </div>
@@ -58,7 +58,7 @@ export default {
         showPlayList() {
             this.$store.commit('showPlayingList')
         },
-        ...mapMutations(['play','pause','playFront','playNext'])
+        ...mapMutations(['play','pause','playFront','playNext','clickProgress','dragMouseDown'])
     },
     components:{
         Lyric

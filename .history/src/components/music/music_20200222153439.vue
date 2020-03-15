@@ -1,0 +1,68 @@
+<template>
+  <div class="musiclist music_list_container">
+    <div class="list_content">
+      	<span class="list_empty" v-if="!musiclist.length">暂无音乐列表哦 !</span>
+		  <div class="music_list"></div>
+    </div>
+  </div>
+</template>
+<script>
+import store from "@/store";
+import musicApi from "@/components/music/music.js";
+import musiclist from "@/components/common/musiclist/musiclist.vue";
+import axios from "axios";
+import qs from "qs";
+export default {
+  data() {
+    return {
+	  musiclist:{},
+      params: this.$route.params,
+      currentMusicLrcIndex: 0
+    };
+  },
+  props: {
+    lrccontent: {}
+  },
+  methods: {
+    
+  },
+  computed: {
+    musicList() {
+      return store.getters.getMusicList;
+    }
+  },
+  mounted() {
+    this.$nextTick(() => {
+			musicApi.getMusicList()
+		  this.musiclist = store.getters.getMusicList;
+		  console.log(this.musiclist)
+		  
+    });
+  }
+};
+</script>
+<style lang="stylus" rel="stylesheet/stylus">
+@import '~common/stylus/global.styl';
+@import '~common/stylus/border-1px/index.styl';
+
+.musiclist {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+
+  .list_content {
+    width: 768px;
+    margin: 0 auto;
+    padding: 40px 5px 15px;
+	color:#fff;
+  }
+}
+</style>

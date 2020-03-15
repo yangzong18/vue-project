@@ -1,0 +1,36 @@
+<template>
+  <div class="recommand">
+    <div class="loading" v-if="loading">
+      {{loadingState}}
+    </div>
+    <ul>
+      <li class="rank-item">
+        <div class="rank-media">
+          <img
+            alt
+            src="http://y.gtimg.cn/music/photo_new/T003R300x300M000002qtxY40JEHZ3.jpg"
+            lazy="loaded"
+          />
+          <span class="listen-count">345.9万</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      topList:null
+    }
+  },
+  methods:{
+
+  },
+  created(){
+    this.$store.dispatch('getRankList').then((response) => {
+      this.topList = response.data.data.topList
+    })
+  }
+}
+</script>

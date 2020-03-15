@@ -1,0 +1,23 @@
+<template>
+  <section class="div_content">
+    <ul class="ul-header border-1px">
+      <!-- pc 页面菜单 --->
+      <div class="left-menu">
+
+        this is left menu。
+
+      </div>
+    </ul>
+  </section>
+</template>
+<script>
+import store from '@/store';
+import Api from '@/config/api';
+export default {
+  data(){
+    return {
+      showLeftMenu:false,
+    }
+  }
+}
+</script>

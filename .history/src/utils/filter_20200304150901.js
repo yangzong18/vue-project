@@ -1,0 +1,1 @@
+listenCount: num => Math.round(num / 1000) / 10 + '万'

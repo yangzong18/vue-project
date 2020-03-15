@@ -1,0 +1,124 @@
+<template>
+    <div class="PostList" id="page">
+        <div class="loading" v-if="loading">
+	        Loading...
+	    </div>
+	    <div class="posts-list" v-else>
+			<ul>
+				<li v-for="post in posts">
+					<h3 :title="post.tab|getTitleStr" :class="post.tab">{{post.title}}</h3>
+					<div class="content">
+						<img v-bind:src="post.author.avatar_url" v-bind:title="post.author.loginname" class="avatar">
+						<div class="info">
+							<p>
+								<span class="name">{{post.author.loginname}}</span>
+								<span class="status"><b>{{post.reply_count}}</b>/{{post.visit_count}}</span>
+							</p>
+							
+							<p>
+								<time>{{post.create_at | formatDate}}</time>
+								<time>{{post.last_reply_at | formatDate}}</time>
+							</p>
+
+						</div>
+					</div>
+				</li>
+			</ul>
+	    </div>
+    </div>
+</template>
+<script>
+export default {
+    name:'PostList',
+    data(){
+        return {
+            posts:[],
+			loading:false,
+			scroll:true,
+			searchKey: {
+                    page: 1,
+                    limit: 20,
+                    tab: 'all',
+                    mdrender: true
+                },
+        }
+	},
+	mounted(){
+		// 滚动加载
+
+		this.$nextTick(() => {
+			window.addEventListener('scroll', this.getScrollData)
+		})
+	},
+	beforeMount() {
+	    	this.loading = true;
+	    	this.getData();
+	    },
+	filters:{
+		timeStyle(startTime){
+			return String(startTime).match(/.{10}/)[0];
+		},
+		getTitleStr(tab){
+			let str = '';
+                switch (tab) {
+                    case 'share':
+                        str = '分享';
+                        break;
+                    case 'ask':
+                        str = '问答';
+                        break;
+                    case 'job':
+                        str = '招聘';
+                        break;
+                    case 'good':
+                        str = '精华';
+                        break;
+                    default:
+                        str = '全部';
+                        break;
+                }
+                return str;
+		}
+	},
+	methods:{
+		getData:function(){
+			this.$http({
+                url:'/api/list',
+                method: 'get',
+              })
+			  .then( (response) => {
+				  console.log(response)
+			  	if( response.status === 200 ){
+					this.scroll = true;
+                    response.data.forEach(this.mergeTopics);
+			  	}
+			  })
+			  .catch(function (error) {
+			    console.log(error);
+			  });
+		},
+		mergeTopics(topic) {
+			if (typeof this.index[topic.id] === 'number') {
+				const topicsIndex = this.index[topic.id];
+				this.posts[topicsIndex] = topic;
+			} else {
+				this.index[topic.id] = this.topics.length;
+				this.posts.push(topic);
+			}
+        },
+		// 滚动加载数据
+		getScrollData() {
+			if (this.scroll) {
+				window.onscroll = () => {
+					// 距离底部200px时加载一次
+					let bottomOfWindow = document.documentElement.offsetHeight - document.documentElement.scrollTop - window.innerHeight <= 200
+					if (bottomOfWindow) {
+						this.getData()
+					}
+				}
+			}
+		}
+			
+	}
+}
+</script>

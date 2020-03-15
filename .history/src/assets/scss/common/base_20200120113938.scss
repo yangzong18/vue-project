@@ -1,0 +1,6 @@
+//搜有浏览器设置圆角
+@mixin rounded-corners {
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 50%;
+  }

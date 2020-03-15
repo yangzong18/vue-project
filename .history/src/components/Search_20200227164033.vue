@@ -1,0 +1,34 @@
+<template>
+    <div id="search">
+        <div class="search">
+            <div class="search-input">
+            <img src="@/assets/icon-search.png" alt="搜索">
+            <form>
+                <input type="text" name="" id="" placeholder="搜索 歌曲/专辑/歌手">
+            </form>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+export default {
+    
+}
+</script>
+<style lang="scss">
+.search {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    top: 0;
+    background: #fff;
+    z-index: 1;
+}   
+@media screen and (min-width: 68vh) {
+    .search {
+      width: 68vh;
+    }
+  }
+</style>

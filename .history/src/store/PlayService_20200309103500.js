@@ -1,0 +1,149 @@
+import * as def from '@/config/def';
+import store from '@/store/index.js'
+import { Message } from 'element-ui';
+const player = new QMplayer();
+player.on('timeupdate',function(){
+  store.commit(
+    'updateCurrentTime',
+    parseInt(player.currentTime)
+  );
+  store.commit(
+    'updateDuration',
+    parseInt(player.duration)
+  )
+})
+
+player.on('ended',function(){
+  store.commit('playContinue')
+})
+
+export default {
+  state:{
+    playing:false,
+    currentTime:0,
+    duration:0,
+    playMode:def.SEQUENTIAL,
+    index:0,
+    song:{
+      name:def.DEFAULT_SONG_NAME
+    },
+    playList:[]
+  },
+  mutations:{
+    playIndex(state,index){
+      state.index = index;
+      state.song = state.playList[index]
+    },
+    setPlayList(state,playList){
+      state.playList = playList.list;
+      state.index = playList.index
+      state.song = state.playList[state.index]
+    },
+    addPlayList(state,item){
+      if(state.playList.indexOf(item) === -1){
+        state.playList.push(item)
+      }
+      
+    },
+    delFromPlayList(state,index){
+      if(isNaN(index) || index >= state.playList.length){
+        return false;
+      }
+      if(index === state.index){
+        if(index === 0 && state.playList.length === 1){
+          //播放列表中只有一首歌
+          state.song = {
+            name: def.DEFAULT_SONG_NAME,
+            singer: ''
+          }
+          state.coverImgUrl = def.DEFAULT_IMG
+        }else{
+          state.song = state.playList[state.index+1]
+        }
+      }else{
+        state.index--
+      }
+      state.playList.splice(index,1)
+    },
+    addToPlayListAsNextPlay(state,item){
+      state.playList.splice(state.index+1,0,item)
+    },
+    updateCurrentTime(state,time){
+      state.currentTime = time
+    },
+    updateDuration(state,time){
+      state.duration = time
+    },
+    play(state){
+      player.play(state.song.mid)
+      player.on("error", function () { 
+        console.log()
+        if (document.getElementsByClassName('el-message').length === 0) {
+          Message({
+            message: '您播放的歌曲仅限客户端播放，建议您打开客户端进行播放',
+            type: 'error'
+          })
+        }else{
+          Message.close()
+          Message({
+            message: '您播放的歌曲仅限客户端播放，建议您打开客户端进行播放',
+            type: 'error'
+          })
+        }
+        
+      }) 
+      player.on("play", function () { 
+        state.playing = true
+      }) 
+    },
+    pause(state){
+      player.pause()
+      state.playing = false
+    },
+    playFront(state){
+      state.index = (state.index - 1 + state.playList.length) % state.playList.length
+      state.song = state.playList[state.index]
+      player.play(state.song.mid)
+    },
+    playNext(state){
+      state.index = (state.index + 1) % state.playList.length
+      state.song = state.playList[state.index]
+      player.play(state.song.mid)
+    },
+    playContinue(state){
+      switch(state.playMode){
+        case def.SINGLE:
+          break;
+        case def.SEQUENTIAL:
+          state.index = (state.index + 1) % state.playList.length
+          state.song = state.playList[state.index]
+          break;
+        case def.RANDOM:
+          state.index = Math.floor(Math.random()*state.playList.length)
+          state.song = state.playList[state.index]
+          break;
+
+      }
+
+      player.play(state.song.mid)
+    },
+    changePlayMode(state){
+      state.playMode = (state.playMode+1)%3
+    },
+    setAlbummid(state,albummid){
+      state.song = {...state.song,albummid}
+    }
+
+  },
+  getters:{
+    currentTime:state=>parseInt(state.currentTime / 60) + ':' + (Array(2).join(0) + (state.currentTime % 60)).slice(-2),
+    duration:state=>parseInt(state.duration / 60) + ':' + (Array(2).join(0) + (state.duration % 60)).slice(-2),
+    coverImgUrl:state=>{
+      if(typeof state.song.albummid === 'undefined'){
+        return def.DEFAULT_IMG
+      }else{
+        return "https://y.gtimg.cn/music/photo_new/T002R500x500M000"+state.song.albummid+".jpg"
+      }
+    }
+  }
+}

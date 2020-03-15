@@ -1,0 +1,66 @@
+<template>
+  <div class="music_sheet">
+  	<div class="list_content_info">
+		<div class="music_list_title border-1px">
+			<span class="music_index"></span>
+			<span class="music_name">歌曲</span>
+			<span class="music_singer">歌手</span>
+			<span class="music_zhuanji">专辑</span>
+			<span class="music_duration">时长</span>
+		</div>
+		<musiclist v-if="musicList" :musiclist = "musicList"></musiclist>
+	</div>
+  </div>
+</template>
+<script>
+  import store from '@/store'
+  import musicApi from '@/components/music/music.js'
+  import musiclist from '@/components/common/musiclist/musiclist.vue'
+  console.log('music/sheet.vue')
+  export default {
+  	data () {
+  		return {
+  			// musicInfo: {},
+  			currentMusic: {},
+  			params: this.$route.params,
+  			currentMusicLrcIndex: 0
+  		}
+  	},
+  	props: {
+  		lrccontent: {}
+  	},
+  	methods: {
+  		// 初始化音乐播放器
+		initMusic () {
+			musicApi.getMusicSheet(this.params.id, this)
+  		}
+  	},
+  	computed: {
+  		musicList () {
+  			return store.getters.getMusicList
+  		}
+  	},
+  	watch: {
+  		'$route' (to, from) {
+  			this.params = this.$route.params
+  		}
+  	},
+  	components: {
+  		musiclist
+  	},
+  	mounted () {
+  		this.$nextTick(() => {
+			musicApi.getMusicList()
+		})
+  	}
+  }
+</script>
+<style lang="stylus" rel="stylesheet/stylus">
+	@import '~common/stylus/global.styl'
+	@import '~common/stylus/border-1px/index.styl'
+	.list_content_info
+		height:100%
+		box-sizing:border-box
+	video
+		display:none	
+</style>

@@ -1,0 +1,65 @@
+<template>
+  <div id="play" class="play-music-page">
+    <div class="music-album">
+      <div class="play-page-hide-btn">
+        <img src="@/assets/icon-jiantou.png" alt />
+      </div>
+      <img src="/static/img/Vue_Music_Blur.f29e504.png" lazy="loaded" />
+    </div>
+    <div class="button-group">
+      <img class="blurbg" :src="coverImgUrl" />
+      <div class="progress-bar-group">
+        <div class="progress-bar">
+          <div class="progress" :style="{width:indicatorPosition+'%'}"></div>
+          <div class="indicater" :style="{left:indicatorPosition+'%'}"></div>
+        </div>
+        <div class="time-indicater">
+          <span>{{currentTime}}</span>
+          <span>{{duration}}</span>
+        </div>
+      </div>
+      <div class="music-info">
+        <p class="music-name">VUE MUSIC</p>
+        <p class="music-author"></p>
+      </div>
+      <div class="lyric">
+        <div id="lyric">
+          <p class="lyric-item">When I see your monsters</p>
+          <p class="lyric-item">And chase them all away</p>
+          <p class="lyric-item">I&amp;apos;ll chase them all away</p>
+        </div>
+      </div>
+      <div class="music-ctrl">
+        <ul>
+          <li>
+            <img src="@/assets/icon-like.png" />
+          </li>
+          <li>
+            <img src="@/assets/icon-shangyiqu.png"
+            />
+          </li>
+          <li>
+            <img
+              :src="playing?$parent.iconPause:$parent.iconPlay"
+              @click="$parent.tapButton"
+              @touchend="$parent.tapButton"
+            />
+          </li>
+          <li>
+            <img src="../assets/icon-xiayiqu.png" @touchend.prevent="playNext" @click="playNext" />
+          </li>
+          <li>
+            <img
+              src="../assets/icon-list.png"
+              @touchend.prevent="showPlayList"
+              @click="showPlayList"
+            />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+export default {};
+</script>

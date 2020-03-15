@@ -1,0 +1,78 @@
+<template>
+  <div
+    class="fixedbg"
+    ref="fixedbg"
+    :style="{backgroundImage : 'url(' + imagepath + ')', backgroundSize:imagesize, backgroundPosition:imageposition}"
+  ></div>
+</template>
+<script>
+import SetMaskType from "@/components/selectmask/selectmask.js";
+import DGlobal from "@/common/js/global.js";
+import { addClass, removeClass } from "@/common/js/Dom.js";
+import '@/common/stylus/global.styl'
+export default {
+    name:'Fixedbg',
+    
+  props: {
+    imagepath: {
+      type: String,
+      default: ""
+    },
+    maskcolor: {
+      type: String,
+      default: "transparent"
+    },
+    maskopacity: {
+      type: String,
+      default: "0.5"
+    },
+    masktype: {
+      type: String,
+      default: "default"
+    },
+    maskglobainfo: {
+      type: Object,
+      default: {}
+    }
+  }
+};
+</script>
+<style lang="stylus" rel="stylesheet/stylus">
+  .fixedbg
+    position:fixed
+    z-index:-2
+    top:0
+    left:0
+    right:0
+    bottom:0
+    background-color:#000
+    &:before
+      content: ''
+      position:absolute
+      top: 0
+      left: 0
+      right: 0
+      bottom:0
+      background-color: $color_deep_gray
+      opacity: 0
+      visibility:hidden
+      transition: all 0.5s
+    &.load
+      &:before
+        content: ''
+        position:absolute
+        top: 0
+        left: 0
+        right: 0
+        bottom:0
+        opacity: 1
+        visibility:visible
+        background-color: $color_deep_gray
+    .mask-fixedbg
+      position:fixed
+      z-index:111111111111
+      top:0
+      left:0
+      right:0
+      bottom:0
+</style>

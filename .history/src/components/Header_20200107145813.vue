@@ -1,0 +1,28 @@
+<template>
+    <header id="hd" class="fix-header">
+		<div class="nv-toolbar">
+			<div class="toolbar-nav"></div> 
+			<span>全部</span> <!----> 
+			<router-link :to="add"><i class="iconfont icon39"></i></router-link>
+		</div>
+		</header>
+</template>
+<script>
+export default {
+    name:'Header'
+}
+</script>
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+#hd.fix-header {
+    width: 100%;
+    background-color: hsla(0,0%,100%,.95);
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: all .3s ease;
+    box-shadow: 0 0 4px rgba(0,0,0,.25);
+    z-index: 2;
+}
+
+</style>

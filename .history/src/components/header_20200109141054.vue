@@ -1,0 +1,24 @@
+<template>
+  <div>
+    <header id="hd" class="fix-header">
+      <div class="nv-toolbar">
+        <div class="toolbar-nav"></div>
+        <span>全部</span>
+        <!---->
+        <a href="" class>
+          <i class="iconfont add-icon"></i>
+        </a>
+      </div>
+    </header>
+  </div>
+  <cm-bar></cm-bar>
+</template>
+<script>
+import cm from '../components/leftbar'
+export default {
+  name: "header",
+  components:{
+      leftbar
+  }
+};
+</script>

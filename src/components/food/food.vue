@@ -24,9 +24,9 @@
             <cartcontrol @add="addFood" :food="food"></cartcontrol>
           </div>
           <!-- transition="fade" 加入动画延迟隐藏时间，防止元素被隐藏，抛物线动画获取不到元素无法计算位置 小球位置错乱的问题  -->
-	  <transition name="fade">
+	        <transition name="fade">
             <div @click.stop.prevent="addFirst" class="buy" v-show="!food.count || food.count === 0">加入购物车</div>
-	  </transition>
+	        </transition>
         </div>
         <!-- 上下边框组件 -->
         <split v-show="food.info"></split>
@@ -69,12 +69,10 @@
 
 <script type="text/ecscript-6">
   import Vue from 'vue';
-  import BScroll from 'better-scroll';
   import { formatDate } from 'common/js/date';
   import cartcontrol from '@/components/cartcontrol/cartcontrol';
   import split from '@/components/split/split';
-  import ratingselect from 'components/ratingselect/ratingselect';
-
+  import ratingselect from '@/components/ratingselect/ratingselect';
   const ALL = 2; // 所有评价
 
   export default {
@@ -98,26 +96,13 @@
     methods: {
       show() { // 显示food组件的方法
         this.showFlag = true;
-        /* 每次这个组件层show的时候把评价的变量在初始化一遍，因为每个商品进来的时候评价的状态都需要是初始状态 */
         this.selectType  = ALL;
         this.onlyContent = true;
-        this.$nextTick(() => { 
-          if (!this.scroll) {
-            this.scroll = new BScroll(this.$refs.food, {
-              click: true
-            });
-          } else {
-            this.scroll.refresh();
-          }
-        });
       },
       hide() { // 返回按钮
         this.showFlag = false;
       },
       addFirst(event) {
-        if (!event._constructed) {
-          return;
-        } 
         this.$emit('add', event.target);
         Vue.set(this.food, 'count', 1);
       },
@@ -136,15 +121,9 @@
       },
       selectRating(type) {
         this.selectType = type;
-        this.$nextTick(() => {
-          this.scroll.refresh();
-        });
       },
       toggleContent() {
         this.onlyContent = !this.onlyContent;
-        this.$nextTick(() => {
-          this.scroll.refresh();
-        });
       }
     },
     filters: {
@@ -157,12 +136,15 @@
       cartcontrol,
       split,
       ratingselect
+    },
+    created(){
+      console.log(this.food.info)
     }
   };
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import '../../common/stylus/mixin.styl';
+  @import '~common/stylus/mixin.styl';
 
   .food
     position: fixed
@@ -173,6 +155,7 @@
     width: 100%
     background: #fff
     transform: translate3d(0 ,0 ,0)
+    overflow:auto
     &.move-enter-active, &.move-leave-active // 食品层进入动画
       transition: all .2s linear
     &.move-enter, &.move-leave-active
@@ -196,7 +179,8 @@
           display: block
           padding: 10px
           font-size: 20px
-          color: #fff
+          opacity :0.9;
+          color:#fff;
     .content // 商品层
       position: relative
       padding: 18px

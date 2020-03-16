@@ -1,4 +1,5 @@
 <template>
+<div>
     <div class="goods">
         <div class="menu-wrapper" ref="menuWrapper">
             <ul>
@@ -15,7 +16,7 @@
                 <li v-for="(item,index) in  goods" :key="index" class="foods-list food-list-hook">
                     <h1 class="title"> {{item.name}} </h1>
                     <ul>
-                        <li v-for="(food, index) in item.foods" :key="index" class="food-item border-1px">
+                        <li v-for="(food, index) in item.foods" :key="index" class="food-item border-1px" @click="selectFood(food, $event)">
                             <div class="icon"> <!--商品小图标-->
                                 <img width="57" height="57" :src="food.icon" alt="food.name">
                             </div>
@@ -42,10 +43,13 @@
         </div>
         <shopcart :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice" ref="shopcart"></shopcart>
     </div>
+    <food @add="addFood" :food="selectedFood" ref="foods"></food>
+</div>    
 </template>
 <script>
 import cartcontrol from '@/components/cartcontrol/cartcontrol'; // 引入增加按钮组件
 import shopcart from '@/components/shopcart/shopcart';
+import food from '@/components/food/food.vue'
 import goodData from '@/common/json/goods.js'; // 引入模拟的商品信息文件
 export default {
     props: {
@@ -69,6 +73,10 @@ export default {
         });
     },
     methods:{
+        selectFood(food,event){
+            this.selectedFood = food
+            this.$refs.foods.show()
+        },
         selectMenu(index,event){
             let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
             let el = foodList[index]; // 滚动到响应的元素
@@ -129,7 +137,8 @@ export default {
     },
     components:{
         cartcontrol,
-        shopcart
+        shopcart,
+        food
     }
 }
 </script>

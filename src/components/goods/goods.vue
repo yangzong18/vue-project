@@ -1,5 +1,4 @@
 <template>
-<div>
     <div class="goods">
         <div class="menu-wrapper" ref="menuWrapper">
             <ul>
@@ -42,9 +41,9 @@
             </ul>
         </div>
         <shopcart :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice" ref="shopcart"></shopcart>
+        <food @add="addFood" :food="selectedFood" ref="foods"></food>  
     </div>
-    <food @add="addFood" :food="selectedFood" ref="foods"></food>
-</div>    
+    
 </template>
 <script>
 import cartcontrol from '@/components/cartcontrol/cartcontrol'; // 引入增加按钮组件

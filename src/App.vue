@@ -9,7 +9,7 @@
         <router-link to="/ratings">评论</router-link>
       </div>
       <div class="tab-item">
-        <router-link to="/seller">商品</router-link>
+        <router-link to="/seller">商家</router-link>
       </div>
     </div>
     <keep-alive>
@@ -40,6 +40,7 @@ export default {
 
 <style lang="stylus">
 @import "~common/stylus/mixin.styl"
+
 .tab
   display: flex
   width: 100%

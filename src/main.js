@@ -4,8 +4,12 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueLazyload from 'vue-lazyload'
+import filters from './utils/fliter'
 import "@/common/stylus/index.styl"
-
+import fliters from './utils/fliter'
+Object.keys(filters).forEach((k)=>[
+  Vue.filter(k,fliters[k])
+])
 Vue.config.productionTip = false
 Vue.use(VueLazyload, {
   error: require('./assets/loading.svg'),

@@ -1,6 +1,6 @@
 # my-project
 
-> a test demo
+> 基础的组件加载（包含vuex,store,stylus,sass,axios等基本的组件）
 
 ## Build Setup
 
